@@ -4,7 +4,7 @@
 #
 Name     : xz
 Version  : 5.2.1
-Release  : 29
+Release  : 30
 URL      : http://tukaani.org/xz/xz-5.2.1.tar.gz
 Source0  : http://tukaani.org/xz/xz-5.2.1.tar.gz
 Summary  : General purpose data compression library
