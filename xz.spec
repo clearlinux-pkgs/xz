@@ -4,7 +4,7 @@
 #
 Name     : xz
 Version  : 5.2.2
-Release  : 31
+Release  : 32
 URL      : http://tukaani.org/xz/xz-5.2.2.tar.gz
 Source0  : http://tukaani.org/xz/xz-5.2.2.tar.gz
 Summary  : General purpose data compression library
@@ -94,8 +94,8 @@ locales components for the xz package.
 %build
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
-export CFLAGS="$CFLAGS -ffunction-sections -fno-semantic-interposition -flto -O3 "
-export CXXFLAGS="$CXXFLAGS -ffunction-sections -fno-semantic-interposition -flto -O3 "
+export CFLAGS="$CFLAGS -ffunction-sections -falign-functions=32 -O3 -flto -fno-semantic-interposition "
+export CXXFLAGS="$CXXFLAGS -ffunction-sections -falign-functions=32 -O3 -flto -fno-semantic-interposition "
 %reconfigure --disable-static --enable-assume-ram=1024
 make V=1  %{?_smp_mflags} pgo-build
 
