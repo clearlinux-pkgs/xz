@@ -4,7 +4,7 @@
 #
 Name     : xz
 Version  : 5.2.2
-Release  : 37
+Release  : 38
 URL      : http://tukaani.org/xz/xz-5.2.2.tar.gz
 Source0  : http://tukaani.org/xz/xz-5.2.2.tar.gz
 Summary  : General purpose data compression library
@@ -16,7 +16,12 @@ Requires: xz-doc
 Requires: xz-locales
 BuildRequires : automake
 BuildRequires : automake-dev
+BuildRequires : gcc-dev32
+BuildRequires : gcc-libgcc32
+BuildRequires : gcc-libstdc++32
 BuildRequires : gettext-bin
+BuildRequires : glibc-dev32
+BuildRequires : glibc-libc32
 BuildRequires : libtool
 BuildRequires : libtool-dev
 BuildRequires : m4
@@ -60,6 +65,16 @@ Provides: xz-devel
 dev components for the xz package.
 
 
+%package dev32
+Summary: dev32 components for the xz package.
+Group: Default
+Requires: xz-lib32
+Requires: xz-bin
+
+%description dev32
+dev32 components for the xz package.
+
+
 %package doc
 Summary: doc components for the xz package.
 Group: Documentation
@@ -76,6 +91,14 @@ Group: Libraries
 lib components for the xz package.
 
 
+%package lib32
+Summary: lib32 components for the xz package.
+Group: Default
+
+%description lib32
+lib32 components for the xz package.
+
+
 %package locales
 Summary: locales components for the xz package.
 Group: Default
@@ -90,15 +113,28 @@ locales components for the xz package.
 %patch2 -p1
 %patch3 -p1
 %patch4 -p2
+pushd ..
+cp -a xz-5.2.2 build32
+popd
 
 %build
 export LANG=C
-export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-semantic-interposition "
-export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-semantic-interposition "
-export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-semantic-interposition "
-export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fno-semantic-interposition "
+export AR=gcc-ar
+export RANLIB=gcc-ranlib
+export NM=gcc-nm
+export CFLAGS="$CFLAGS -O3 -falign-functions=32 -flto -fno-semantic-interposition "
+export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -flto -fno-semantic-interposition "
+export FFLAGS="$CFLAGS -O3 -falign-functions=32 -flto -fno-semantic-interposition "
+export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -flto -fno-semantic-interposition "
 %reconfigure --disable-static --enable-assume-ram=1024
 make V=1  %{?_smp_mflags} pgo-build
+pushd ../build32/
+export CFLAGS="$CFLAGS -m32"
+export CXXFLAGS="$CXXFLAGS -m32"
+export LDFLAGS="$LDFLAGS -m32"
+%reconfigure --disable-static --enable-assume-ram=1024 --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
+make V=1  %{?_smp_mflags} pgo-build
+popd
 
 %check
 export LANG=C
@@ -109,6 +145,15 @@ make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
 rm -rf %{buildroot}
+pushd ../build32/
+%make_install32
+if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
+then
+pushd %{buildroot}/usr/lib32/pkgconfig
+for i in *.pc ; do mv $i 32$i ; done
+popd
+fi
+popd
 %make_install
 %find_lang xz
 
@@ -161,6 +206,11 @@ rm -rf %{buildroot}
 /usr/lib64/liblzma.so
 /usr/lib64/pkgconfig/liblzma.pc
 
+%files dev32
+%defattr(-,root,root,-)
+/usr/lib32/liblzma.so
+/usr/lib32/pkgconfig/32liblzma.pc
+
 %files doc
 %defattr(-,root,root,-)
 %doc /usr/share/doc/xz/*
@@ -170,6 +220,11 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 /usr/lib64/liblzma.so.5
 /usr/lib64/liblzma.so.5.2.2
+
+%files lib32
+%defattr(-,root,root,-)
+/usr/lib32/liblzma.so.5
+/usr/lib32/liblzma.so.5.2.2
 
 %files locales -f xz.lang 
 %defattr(-,root,root,-)
