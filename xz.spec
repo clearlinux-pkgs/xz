@@ -4,7 +4,7 @@
 #
 Name     : xz
 Version  : 5.2.2
-Release  : 35
+Release  : 36
 URL      : http://tukaani.org/xz/xz-5.2.2.tar.gz
 Source0  : http://tukaani.org/xz/xz-5.2.2.tar.gz
 Summary  : General purpose data compression library
@@ -92,14 +92,16 @@ locales components for the xz package.
 %patch4 -p2
 
 %build
-export AR=gcc-ar
-export RANLIB=gcc-ranlib
-export CFLAGS="$CFLAGS -ffunction-sections -falign-functions=32 -O3 -flto -fno-semantic-interposition "
-export CXXFLAGS="$CXXFLAGS -ffunction-sections -falign-functions=32 -O3 -flto -fno-semantic-interposition "
+export LANG=C
+export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-semantic-interposition "
+export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-semantic-interposition "
+export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-semantic-interposition "
+export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fno-semantic-interposition "
 %reconfigure --disable-static --enable-assume-ram=1024
 make V=1  %{?_smp_mflags} pgo-build
 
 %check
+export LANG=C
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost
@@ -156,8 +158,8 @@ rm -rf %{buildroot}
 /usr/include/lzma/stream_flags.h
 /usr/include/lzma/version.h
 /usr/include/lzma/vli.h
-/usr/lib64/*.so
-/usr/lib64/pkgconfig/*.pc
+/usr/lib64/liblzma.so
+/usr/lib64/pkgconfig/liblzma.pc
 
 %files doc
 %defattr(-,root,root,-)
@@ -166,7 +168,8 @@ rm -rf %{buildroot}
 
 %files lib
 %defattr(-,root,root,-)
-/usr/lib64/*.so.*
+/usr/lib64/liblzma.so.5
+/usr/lib64/liblzma.so.5.2.2
 
 %files locales -f xz.lang 
 %defattr(-,root,root,-)
