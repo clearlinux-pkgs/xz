@@ -6,7 +6,7 @@
 #
 Name     : xz
 Version  : 5.2.3
-Release  : 44
+Release  : 45
 URL      : http://tukaani.org/xz/xz-5.2.3.tar.gz
 Source0  : http://tukaani.org/xz/xz-5.2.3.tar.gz
 Source99 : http://tukaani.org/xz/xz-5.2.3.tar.gz.asc
@@ -129,7 +129,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1523200937
+export SOURCE_DATE_EPOCH=1523201408
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
@@ -164,7 +164,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1523200937
+export SOURCE_DATE_EPOCH=1523201408
 rm -rf %{buildroot}
 pushd ../build32/
 %make_install32
@@ -186,29 +186,29 @@ popd
 
 %files bin
 %defattr(-,root,root,-)
-/usr/bin/haswell/lzcat
-/usr/bin/haswell/lzcmp
-/usr/bin/haswell/lzdiff
-/usr/bin/haswell/lzegrep
-/usr/bin/haswell/lzfgrep
-/usr/bin/haswell/lzgrep
-/usr/bin/haswell/lzless
-/usr/bin/haswell/lzma
-/usr/bin/haswell/lzmadec
-/usr/bin/haswell/lzmainfo
-/usr/bin/haswell/lzmore
-/usr/bin/haswell/unlzma
-/usr/bin/haswell/unxz
-/usr/bin/haswell/xz
-/usr/bin/haswell/xzcat
-/usr/bin/haswell/xzcmp
-/usr/bin/haswell/xzdec
-/usr/bin/haswell/xzdiff
-/usr/bin/haswell/xzegrep
-/usr/bin/haswell/xzfgrep
-/usr/bin/haswell/xzgrep
-/usr/bin/haswell/xzless
-/usr/bin/haswell/xzmore
+%exclude /usr/bin/haswell/lzcat
+%exclude /usr/bin/haswell/lzcmp
+%exclude /usr/bin/haswell/lzdiff
+%exclude /usr/bin/haswell/lzegrep
+%exclude /usr/bin/haswell/lzfgrep
+%exclude /usr/bin/haswell/lzgrep
+%exclude /usr/bin/haswell/lzless
+%exclude /usr/bin/haswell/lzma
+%exclude /usr/bin/haswell/lzmadec
+%exclude /usr/bin/haswell/lzmainfo
+%exclude /usr/bin/haswell/lzmore
+%exclude /usr/bin/haswell/unlzma
+%exclude /usr/bin/haswell/unxz
+%exclude /usr/bin/haswell/xz
+%exclude /usr/bin/haswell/xzcat
+%exclude /usr/bin/haswell/xzcmp
+%exclude /usr/bin/haswell/xzdec
+%exclude /usr/bin/haswell/xzdiff
+%exclude /usr/bin/haswell/xzegrep
+%exclude /usr/bin/haswell/xzfgrep
+%exclude /usr/bin/haswell/xzgrep
+%exclude /usr/bin/haswell/xzless
+%exclude /usr/bin/haswell/xzmore
 /usr/bin/lzcat
 /usr/bin/lzcmp
 /usr/bin/lzdiff
