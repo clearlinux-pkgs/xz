@@ -5,11 +5,11 @@
 # Source0 file verified with key 0x38EE757D69184620 (lasse.collin@tukaani.org)
 #
 Name     : xz
-Version  : 5.2.3
-Release  : 45
-URL      : http://tukaani.org/xz/xz-5.2.3.tar.gz
-Source0  : http://tukaani.org/xz/xz-5.2.3.tar.gz
-Source99 : http://tukaani.org/xz/xz-5.2.3.tar.gz.asc
+Version  : 5.2.4
+Release  : 46
+URL      : http://tukaani.org/xz/xz-5.2.4.tar.gz
+Source0  : http://tukaani.org/xz/xz-5.2.4.tar.gz
+Source99 : http://tukaani.org/xz/xz-5.2.4.tar.gz.sig
 Summary  : General purpose data compression library
 Group    : Development/Tools
 License  : GPL-2.0 GPL-3.0 LGPL-2.1 Public-Domain
@@ -112,16 +112,16 @@ locales components for the xz package.
 
 
 %prep
-%setup -q -n xz-5.2.3
+%setup -q -n xz-5.2.4
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
 %patch4 -p2
 pushd ..
-cp -a xz-5.2.3 build32
+cp -a xz-5.2.4 build32
 popd
 pushd ..
-cp -a xz-5.2.3 buildavx2
+cp -a xz-5.2.4 buildavx2
 popd
 
 %build
@@ -129,7 +129,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1523201408
+export SOURCE_DATE_EPOCH=1525035143
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
@@ -164,7 +164,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1523201408
+export SOURCE_DATE_EPOCH=1525035143
 rm -rf %{buildroot}
 pushd ../build32/
 %make_install32
@@ -268,14 +268,14 @@ popd
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/haswell/liblzma.so.5
-/usr/lib64/haswell/liblzma.so.5.2.3
+/usr/lib64/haswell/liblzma.so.5.2.4
 /usr/lib64/liblzma.so.5
-/usr/lib64/liblzma.so.5.2.3
+/usr/lib64/liblzma.so.5.2.4
 
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/liblzma.so.5
-/usr/lib32/liblzma.so.5.2.3
+/usr/lib32/liblzma.so.5.2.4
 
 %files locales -f xz.lang
 %defattr(-,root,root,-)
