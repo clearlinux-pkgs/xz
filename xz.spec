@@ -6,10 +6,10 @@
 #
 Name     : xz
 Version  : 5.2.4
-Release  : 52
+Release  : 53
 URL      : http://tukaani.org/xz/xz-5.2.4.tar.gz
 Source0  : http://tukaani.org/xz/xz-5.2.4.tar.gz
-Source99 : http://tukaani.org/xz/xz-5.2.4.tar.gz.sig
+Source1 : http://tukaani.org/xz/xz-5.2.4.tar.gz.sig
 Summary  : General purpose data compression library
 Group    : Development/Tools
 License  : GPL-2.0 GPL-3.0 LGPL-2.1 Public-Domain
@@ -54,7 +54,6 @@ XZ Utils
 Summary: bin components for the xz package.
 Group: Binaries
 Requires: xz-license = %{version}-%{release}
-Requires: xz-man = %{version}-%{release}
 
 %description bin
 bin components for the xz package.
@@ -66,6 +65,7 @@ Group: Development
 Requires: xz-lib = %{version}-%{release}
 Requires: xz-bin = %{version}-%{release}
 Provides: xz-devel = %{version}-%{release}
+Requires: xz = %{version}-%{release}
 
 %description dev
 dev components for the xz package.
@@ -150,8 +150,9 @@ popd
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1542435458
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1569531224
+export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
@@ -160,15 +161,15 @@ export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-
 export FFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 %reconfigure --disable-static --enable-assume-ram=1024
-make  %{?_smp_mflags} pgo-build
+make  %{?_smp_mflags}  pgo-build
 pushd ../build32/
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
-export ASFLAGS="$ASFLAGS --32"
-export CFLAGS="$CFLAGS -m32"
-export CXXFLAGS="$CXXFLAGS -m32"
-export LDFLAGS="$LDFLAGS -m32"
+export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
+export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
+export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
+export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
 %reconfigure --disable-static --enable-assume-ram=1024  --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
-make  %{?_smp_mflags} pgo-build
+make  %{?_smp_mflags}  pgo-build
 popd
 unset PKG_CONFIG_PATH
 pushd ../buildavx2/
@@ -176,11 +177,11 @@ export CFLAGS="$CFLAGS -m64 -march=haswell"
 export CXXFLAGS="$CXXFLAGS -m64 -march=haswell"
 export LDFLAGS="$LDFLAGS -m64 -march=haswell"
 %reconfigure --disable-static --enable-assume-ram=1024
-make  %{?_smp_mflags} pgo-build
+make  %{?_smp_mflags}  pgo-build
 popd
 
 %check
-export LANG=C
+export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
@@ -191,7 +192,7 @@ cd ../buildavx2;
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1542435458
+export SOURCE_DATE_EPOCH=1569531224
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/xz
 cp COPYING %{buildroot}/usr/share/package-licenses/xz/COPYING
@@ -212,21 +213,36 @@ pushd ../buildavx2/
 popd
 %make_install
 %find_lang xz
+## Remove excluded files
+rm -f %{buildroot}/usr/bin/haswell/lzcat
+rm -f %{buildroot}/usr/bin/haswell/lzcmp
+rm -f %{buildroot}/usr/bin/haswell/lzdiff
+rm -f %{buildroot}/usr/bin/haswell/lzegrep
+rm -f %{buildroot}/usr/bin/haswell/lzfgrep
+rm -f %{buildroot}/usr/bin/haswell/lzgrep
+rm -f %{buildroot}/usr/bin/haswell/lzless
+rm -f %{buildroot}/usr/bin/haswell/lzma
+rm -f %{buildroot}/usr/bin/haswell/lzmadec
+rm -f %{buildroot}/usr/bin/haswell/lzmainfo
+rm -f %{buildroot}/usr/bin/haswell/lzmore
+rm -f %{buildroot}/usr/bin/haswell/unlzma
+rm -f %{buildroot}/usr/bin/haswell/unxz
+rm -f %{buildroot}/usr/bin/haswell/xz
+rm -f %{buildroot}/usr/bin/haswell/xzcat
+rm -f %{buildroot}/usr/bin/haswell/xzcmp
+rm -f %{buildroot}/usr/bin/haswell/xzdec
+rm -f %{buildroot}/usr/bin/haswell/xzdiff
+rm -f %{buildroot}/usr/bin/haswell/xzegrep
+rm -f %{buildroot}/usr/bin/haswell/xzfgrep
+rm -f %{buildroot}/usr/bin/haswell/xzgrep
+rm -f %{buildroot}/usr/bin/haswell/xzless
+rm -f %{buildroot}/usr/bin/haswell/xzmore
 
 %files
 %defattr(-,root,root,-)
 
 %files bin
 %defattr(-,root,root,-)
-%exclude /usr/bin/haswell/lzcat
-%exclude /usr/bin/haswell/lzma
-%exclude /usr/bin/haswell/lzmadec
-%exclude /usr/bin/haswell/lzmainfo
-%exclude /usr/bin/haswell/unlzma
-%exclude /usr/bin/haswell/unxz
-%exclude /usr/bin/haswell/xz
-%exclude /usr/bin/haswell/xzcat
-%exclude /usr/bin/haswell/xzdec
 /usr/bin/lzcat
 /usr/bin/lzcmp
 /usr/bin/lzdiff
@@ -253,7 +269,7 @@ popd
 
 %files dev
 %defattr(-,root,root,-)
-/usr/include/*.h
+/usr/include/lzma.h
 /usr/include/lzma/base.h
 /usr/include/lzma/bcj.h
 /usr/include/lzma/block.h

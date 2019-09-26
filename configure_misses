@@ -2,6 +2,7 @@ Configure miss: if debugging code should be compiled
 Configure miss: if external SHA-256 should be used
 Configure miss: if small size is preferred over speed
 Configure miss: if sandboxing should be used
+Configure miss: windres
 Configure miss: struct stat.st_atimespec.tv_nsec
 Configure miss: struct stat.st_atimensec
 Configure miss: struct stat.st_uatime
@@ -12,6 +13,7 @@ Configure miss: if external SHA-256 should be used
 Configure miss: if small size is preferred over speed
 Configure miss: if sandboxing should be used
 Configure miss: i686-generic-linux-gnu-windres
+Configure miss: windres
 Configure miss: struct stat.st_atimespec.tv_nsec
 Configure miss: struct stat.st_atimensec
 Configure miss: struct stat.st_uatime
@@ -21,6 +23,7 @@ Configure miss: if debugging code should be compiled
 Configure miss: if external SHA-256 should be used
 Configure miss: if small size is preferred over speed
 Configure miss: if sandboxing should be used
+Configure miss: windres
 Configure miss: struct stat.st_atimespec.tv_nsec
 Configure miss: struct stat.st_atimensec
 Configure miss: struct stat.st_uatime
