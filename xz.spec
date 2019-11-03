@@ -6,7 +6,7 @@
 #
 Name     : xz
 Version  : 5.2.4
-Release  : 53
+Release  : 54
 URL      : http://tukaani.org/xz/xz-5.2.4.tar.gz
 Source0  : http://tukaani.org/xz/xz-5.2.4.tar.gz
 Source1 : http://tukaani.org/xz/xz-5.2.4.tar.gz.sig
