@@ -5,11 +5,11 @@
 # Source0 file verified with key 0x38EE757D69184620 (lasse.collin@tukaani.org)
 #
 Name     : xz
-Version  : 5.2.4
-Release  : 54
-URL      : http://tukaani.org/xz/xz-5.2.4.tar.gz
-Source0  : http://tukaani.org/xz/xz-5.2.4.tar.gz
-Source1 : http://tukaani.org/xz/xz-5.2.4.tar.gz.sig
+Version  : 5.2.5
+Release  : 55
+URL      : http://tukaani.org/xz/xz-5.2.5.tar.xz
+Source0  : http://tukaani.org/xz/xz-5.2.5.tar.xz
+Source1  : http://tukaani.org/xz/xz-5.2.5.tar.xz.sig
 Summary  : General purpose data compression library
 Group    : Development/Tools
 License  : GPL-2.0 GPL-3.0 LGPL-2.1 Public-Domain
@@ -46,7 +46,7 @@ XZ Utils
 1.3. Documentation for liblzma
 2. Version numbering
 3. Reporting bugs
-4. Translating the xz tool
+4. Translations
 5. Other implementations of the .xz format
 6. Contact information
 
@@ -65,6 +65,7 @@ Group: Development
 Requires: xz-lib = %{version}-%{release}
 Requires: xz-bin = %{version}-%{release}
 Provides: xz-devel = %{version}-%{release}
+Requires: xz = %{version}-%{release}
 Requires: xz = %{version}-%{release}
 
 %description dev
@@ -134,16 +135,17 @@ man components for the xz package.
 
 
 %prep
-%setup -q -n xz-5.2.4
+%setup -q -n xz-5.2.5
+cd %{_builddir}/xz-5.2.5
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
 %patch4 -p2
 pushd ..
-cp -a xz-5.2.4 build32
+cp -a xz-5.2.5 build32
 popd
 pushd ..
-cp -a xz-5.2.4 buildavx2
+cp -a xz-5.2.5 buildavx2
 popd
 
 %build
@@ -151,7 +153,8 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1569531224
+export SOURCE_DATE_EPOCH=1584488787
+# -Werror is for werrorists
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -192,13 +195,13 @@ cd ../buildavx2;
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1569531224
+export SOURCE_DATE_EPOCH=1584488787
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/xz
-cp COPYING %{buildroot}/usr/share/package-licenses/xz/COPYING
-cp COPYING.GPLv2 %{buildroot}/usr/share/package-licenses/xz/COPYING.GPLv2
-cp COPYING.GPLv3 %{buildroot}/usr/share/package-licenses/xz/COPYING.GPLv3
-cp COPYING.LGPLv2.1 %{buildroot}/usr/share/package-licenses/xz/COPYING.LGPLv2.1
+cp %{_builddir}/xz-5.2.5/COPYING %{buildroot}/usr/share/package-licenses/xz/66933e63e70616b43f1dc60340491f8e050eedfd
+cp %{_builddir}/xz-5.2.5/COPYING.GPLv2 %{buildroot}/usr/share/package-licenses/xz/4cc77b90af91e615a64ae04893fdffa7939db84c
+cp %{_builddir}/xz-5.2.5/COPYING.GPLv3 %{buildroot}/usr/share/package-licenses/xz/8624bcdae55baeef00cd11d5dfcfa60f68710a02
+cp %{_builddir}/xz-5.2.5/COPYING.LGPLv2.1 %{buildroot}/usr/share/package-licenses/xz/01a6b4bf79aca9b556822601186afab86e8c4fbf
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -301,24 +304,46 @@ rm -f %{buildroot}/usr/bin/haswell/xzmore
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/haswell/liblzma.so.5
-/usr/lib64/haswell/liblzma.so.5.2.4
+/usr/lib64/haswell/liblzma.so.5.2.5
 /usr/lib64/liblzma.so.5
-/usr/lib64/liblzma.so.5.2.4
+/usr/lib64/liblzma.so.5.2.5
 
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/liblzma.so.5
-/usr/lib32/liblzma.so.5.2.4
+/usr/lib32/liblzma.so.5.2.5
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/xz/COPYING
-/usr/share/package-licenses/xz/COPYING.GPLv2
-/usr/share/package-licenses/xz/COPYING.GPLv3
-/usr/share/package-licenses/xz/COPYING.LGPLv2.1
+/usr/share/package-licenses/xz/01a6b4bf79aca9b556822601186afab86e8c4fbf
+/usr/share/package-licenses/xz/4cc77b90af91e615a64ae04893fdffa7939db84c
+/usr/share/package-licenses/xz/66933e63e70616b43f1dc60340491f8e050eedfd
+/usr/share/package-licenses/xz/8624bcdae55baeef00cd11d5dfcfa60f68710a02
 
 %files man
 %defattr(0644,root,root,0755)
+/usr/share/man/de/man1/lzcat.1
+/usr/share/man/de/man1/lzcmp.1
+/usr/share/man/de/man1/lzdiff.1
+/usr/share/man/de/man1/lzegrep.1
+/usr/share/man/de/man1/lzfgrep.1
+/usr/share/man/de/man1/lzgrep.1
+/usr/share/man/de/man1/lzless.1
+/usr/share/man/de/man1/lzma.1
+/usr/share/man/de/man1/lzmadec.1
+/usr/share/man/de/man1/lzmore.1
+/usr/share/man/de/man1/unlzma.1
+/usr/share/man/de/man1/unxz.1
+/usr/share/man/de/man1/xz.1
+/usr/share/man/de/man1/xzcat.1
+/usr/share/man/de/man1/xzcmp.1
+/usr/share/man/de/man1/xzdec.1
+/usr/share/man/de/man1/xzdiff.1
+/usr/share/man/de/man1/xzegrep.1
+/usr/share/man/de/man1/xzfgrep.1
+/usr/share/man/de/man1/xzgrep.1
+/usr/share/man/de/man1/xzless.1
+/usr/share/man/de/man1/xzmore.1
 /usr/share/man/man1/lzcat.1
 /usr/share/man/man1/lzcmp.1
 /usr/share/man/man1/lzdiff.1
