@@ -7,9 +7,9 @@
 Name     : xz
 Version  : 5.2.5
 Release  : 55
-URL      : http://tukaani.org/xz/xz-5.2.5.tar.xz
-Source0  : http://tukaani.org/xz/xz-5.2.5.tar.xz
-Source1  : http://tukaani.org/xz/xz-5.2.5.tar.xz.sig
+URL      : https://tukaani.org/xz/xz-5.2.5.tar.xz
+Source0  : https://tukaani.org/xz/xz-5.2.5.tar.xz
+Source1  : https://tukaani.org/xz/xz-5.2.5.tar.xz.sig
 Summary  : General purpose data compression library
 Group    : Development/Tools
 License  : GPL-2.0 GPL-3.0 LGPL-2.1 Public-Domain
