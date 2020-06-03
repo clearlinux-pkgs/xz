@@ -4,9 +4,10 @@
 #
 # Source0 file verified with key 0x38EE757D69184620 (lasse.collin@tukaani.org)
 #
+%define keepstatic 1
 Name     : xz
 Version  : 5.2.5
-Release  : 55
+Release  : 56
 URL      : https://tukaani.org/xz/xz-5.2.5.tar.xz
 Source0  : https://tukaani.org/xz/xz-5.2.5.tar.xz
 Source1  : https://tukaani.org/xz/xz-5.2.5.tar.xz.sig
@@ -65,7 +66,6 @@ Group: Development
 Requires: xz-lib = %{version}-%{release}
 Requires: xz-bin = %{version}-%{release}
 Provides: xz-devel = %{version}-%{release}
-Requires: xz = %{version}-%{release}
 Requires: xz = %{version}-%{release}
 
 %description dev
@@ -134,6 +134,24 @@ Group: Default
 man components for the xz package.
 
 
+%package staticdev
+Summary: staticdev components for the xz package.
+Group: Default
+Requires: xz-dev = %{version}-%{release}
+
+%description staticdev
+staticdev components for the xz package.
+
+
+%package staticdev32
+Summary: staticdev32 components for the xz package.
+Group: Default
+Requires: xz-dev = %{version}-%{release}
+
+%description staticdev32
+staticdev32 components for the xz package.
+
+
 %prep
 %setup -q -n xz-5.2.5
 cd %{_builddir}/xz-5.2.5
@@ -153,17 +171,16 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1584488787
-# -Werror is for werrorists
+export SOURCE_DATE_EPOCH=1591202382
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
 export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export FFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export FCFLAGS="$FFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export FFLAGS="$FFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-%reconfigure --disable-static --enable-assume-ram=1024
+%reconfigure  --enable-assume-ram=1024
 make  %{?_smp_mflags}  pgo-build
 pushd ../build32/
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
@@ -171,15 +188,17 @@ export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
 export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
 export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
 export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
-%reconfigure --disable-static --enable-assume-ram=1024  --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
+%reconfigure  --enable-assume-ram=1024  --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
 make  %{?_smp_mflags}  pgo-build
 popd
 unset PKG_CONFIG_PATH
 pushd ../buildavx2/
 export CFLAGS="$CFLAGS -m64 -march=haswell"
 export CXXFLAGS="$CXXFLAGS -m64 -march=haswell"
+export FFLAGS="$FFLAGS -m64 -march=haswell"
+export FCFLAGS="$FCFLAGS -m64 -march=haswell"
 export LDFLAGS="$LDFLAGS -m64 -march=haswell"
-%reconfigure --disable-static --enable-assume-ram=1024
+%reconfigure  --enable-assume-ram=1024
 make  %{?_smp_mflags}  pgo-build
 popd
 
@@ -195,7 +214,7 @@ cd ../buildavx2;
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1584488787
+export SOURCE_DATE_EPOCH=1591202382
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/xz
 cp %{_builddir}/xz-5.2.5/COPYING %{buildroot}/usr/share/package-licenses/xz/66933e63e70616b43f1dc60340491f8e050eedfd
@@ -367,6 +386,14 @@ rm -f %{buildroot}/usr/bin/haswell/xzmore
 /usr/share/man/man1/xzgrep.1
 /usr/share/man/man1/xzless.1
 /usr/share/man/man1/xzmore.1
+
+%files staticdev
+%defattr(-,root,root,-)
+/usr/lib64/liblzma.a
+
+%files staticdev32
+%defattr(-,root,root,-)
+/usr/lib32/liblzma.a
 
 %files locales -f xz.lang
 %defattr(-,root,root,-)
