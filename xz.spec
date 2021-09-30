@@ -7,7 +7,7 @@
 %define keepstatic 1
 Name     : xz
 Version  : 5.2.5
-Release  : 56
+Release  : 58
 URL      : https://tukaani.org/xz/xz-5.2.5.tar.xz
 Source0  : https://tukaani.org/xz/xz-5.2.5.tar.xz
 Source1  : https://tukaani.org/xz/xz-5.2.5.tar.xz.sig
@@ -165,25 +165,28 @@ popd
 pushd ..
 cp -a xz-5.2.5 buildavx2
 popd
+pushd ..
+cp -a xz-5.2.5 buildavx512
+popd
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1591202382
+export SOURCE_DATE_EPOCH=1633018081
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export FCFLAGS="$FFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export FFLAGS="$FFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export CFLAGS="$CFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
+export FCFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
+export FFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
+export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
 %reconfigure  --enable-assume-ram=1024
 make  %{?_smp_mflags}  pgo-build
 pushd ../build32/
-export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+export PKG_CONFIG_PATH="/usr/lib32/pkgconfig:/usr/share/pkgconfig"
 export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
 export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
 export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
@@ -193,11 +196,21 @@ make  %{?_smp_mflags}  pgo-build
 popd
 unset PKG_CONFIG_PATH
 pushd ../buildavx2/
-export CFLAGS="$CFLAGS -m64 -march=haswell"
-export CXXFLAGS="$CXXFLAGS -m64 -march=haswell"
-export FFLAGS="$FFLAGS -m64 -march=haswell"
-export FCFLAGS="$FCFLAGS -m64 -march=haswell"
-export LDFLAGS="$LDFLAGS -m64 -march=haswell"
+export CFLAGS="$CFLAGS -m64 -march=x86-64-v3"
+export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v3"
+export FFLAGS="$FFLAGS -m64 -march=x86-64-v3"
+export FCFLAGS="$FCFLAGS -m64 -march=x86-64-v3"
+export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v3"
+%reconfigure  --enable-assume-ram=1024
+make  %{?_smp_mflags}  pgo-build
+popd
+unset PKG_CONFIG_PATH
+pushd ../buildavx512/
+export CFLAGS="$CFLAGS -m64 -march=skylake-avx512 -mprefer-vector-width=256"
+export CXXFLAGS="$CXXFLAGS -m64 -march=skylake-avx512 -mprefer-vector-width=256"
+export FFLAGS="$FFLAGS -m64 -march=skylake-avx512 -mprefer-vector-width=256"
+export FCFLAGS="$FCFLAGS -m64 -march=skylake-avx512 -mprefer-vector-width=256"
+export LDFLAGS="$LDFLAGS -m64 -march=skylake-avx512"
 %reconfigure  --enable-assume-ram=1024
 make  %{?_smp_mflags}  pgo-build
 popd
@@ -207,14 +220,16 @@ export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-make VERBOSE=1 V=1 %{?_smp_mflags} check
+make %{?_smp_mflags} check
 cd ../build32;
-make VERBOSE=1 V=1 %{?_smp_mflags} check || :
+make %{?_smp_mflags} check || :
 cd ../buildavx2;
-make VERBOSE=1 V=1 %{?_smp_mflags} check || :
+make %{?_smp_mflags} check || :
+cd ../buildavx512;
+make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1591202382
+export SOURCE_DATE_EPOCH=1633018081
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/xz
 cp %{_builddir}/xz-5.2.5/COPYING %{buildroot}/usr/share/package-licenses/xz/66933e63e70616b43f1dc60340491f8e050eedfd
@@ -229,6 +244,15 @@ pushd %{buildroot}/usr/lib32/pkgconfig
 for i in *.pc ; do ln -s $i 32$i ; done
 popd
 fi
+if [ -d %{buildroot}/usr/share/pkgconfig ]
+then
+pushd %{buildroot}/usr/share/pkgconfig
+for i in *.pc ; do ln -s $i 32$i ; done
+popd
+fi
+popd
+pushd ../buildavx512/
+%make_install_avx512
 popd
 pushd ../buildavx2/
 %make_install_avx2
@@ -236,35 +260,53 @@ popd
 %make_install
 %find_lang xz
 ## Remove excluded files
-rm -f %{buildroot}/usr/bin/haswell/lzcat
-rm -f %{buildroot}/usr/bin/haswell/lzcmp
-rm -f %{buildroot}/usr/bin/haswell/lzdiff
-rm -f %{buildroot}/usr/bin/haswell/lzegrep
-rm -f %{buildroot}/usr/bin/haswell/lzfgrep
-rm -f %{buildroot}/usr/bin/haswell/lzgrep
-rm -f %{buildroot}/usr/bin/haswell/lzless
-rm -f %{buildroot}/usr/bin/haswell/lzma
-rm -f %{buildroot}/usr/bin/haswell/lzmadec
-rm -f %{buildroot}/usr/bin/haswell/lzmainfo
-rm -f %{buildroot}/usr/bin/haswell/lzmore
-rm -f %{buildroot}/usr/bin/haswell/unlzma
-rm -f %{buildroot}/usr/bin/haswell/unxz
-rm -f %{buildroot}/usr/bin/haswell/xz
-rm -f %{buildroot}/usr/bin/haswell/xzcat
-rm -f %{buildroot}/usr/bin/haswell/xzcmp
-rm -f %{buildroot}/usr/bin/haswell/xzdec
-rm -f %{buildroot}/usr/bin/haswell/xzdiff
-rm -f %{buildroot}/usr/bin/haswell/xzegrep
-rm -f %{buildroot}/usr/bin/haswell/xzfgrep
-rm -f %{buildroot}/usr/bin/haswell/xzgrep
-rm -f %{buildroot}/usr/bin/haswell/xzless
-rm -f %{buildroot}/usr/bin/haswell/xzmore
+rm -f %{buildroot}/usr/bin/x86-64-v3/lzcat
+rm -f %{buildroot}/usr/bin/x86-64-v3/lzcmp
+rm -f %{buildroot}/usr/bin/x86-64-v3/lzdiff
+rm -f %{buildroot}/usr/bin/x86-64-v3/lzegrep
+rm -f %{buildroot}/usr/bin/x86-64-v3/lzfgrep
+rm -f %{buildroot}/usr/bin/x86-64-v3/lzgrep
+rm -f %{buildroot}/usr/bin/x86-64-v3/lzless
+rm -f %{buildroot}/usr/bin/x86-64-v3/lzma
+rm -f %{buildroot}/usr/bin/x86-64-v3/lzmadec
+rm -f %{buildroot}/usr/bin/x86-64-v3/lzmainfo
+rm -f %{buildroot}/usr/bin/x86-64-v3/lzmore
+rm -f %{buildroot}/usr/bin/x86-64-v3/unlzma
+rm -f %{buildroot}/usr/bin/x86-64-v3/unxz
+rm -f %{buildroot}/usr/bin/x86-64-v3/xz
+rm -f %{buildroot}/usr/bin/x86-64-v3/xzcat
+rm -f %{buildroot}/usr/bin/x86-64-v3/xzcmp
+rm -f %{buildroot}/usr/bin/x86-64-v3/xzdec
+rm -f %{buildroot}/usr/bin/x86-64-v3/xzdiff
+rm -f %{buildroot}/usr/bin/x86-64-v3/xzegrep
+rm -f %{buildroot}/usr/bin/x86-64-v3/xzfgrep
+rm -f %{buildroot}/usr/bin/x86-64-v3/xzgrep
+rm -f %{buildroot}/usr/bin/x86-64-v3/xzless
+rm -f %{buildroot}/usr/bin/x86-64-v3/xzmore
 
 %files
 %defattr(-,root,root,-)
 
 %files bin
 %defattr(-,root,root,-)
+/usr/bin/haswell/avx512_1/lzcat
+/usr/bin/haswell/avx512_1/lzma
+/usr/bin/haswell/avx512_1/lzmadec
+/usr/bin/haswell/avx512_1/lzmainfo
+/usr/bin/haswell/avx512_1/unlzma
+/usr/bin/haswell/avx512_1/unxz
+/usr/bin/haswell/avx512_1/xz
+/usr/bin/haswell/avx512_1/xzcat
+/usr/bin/haswell/avx512_1/xzdec
+/usr/bin/haswell/lzcat
+/usr/bin/haswell/lzma
+/usr/bin/haswell/lzmadec
+/usr/bin/haswell/lzmainfo
+/usr/bin/haswell/unlzma
+/usr/bin/haswell/unxz
+/usr/bin/haswell/xz
+/usr/bin/haswell/xzcat
+/usr/bin/haswell/xzdec
 /usr/bin/lzcat
 /usr/bin/lzcmp
 /usr/bin/lzdiff
@@ -306,6 +348,7 @@ rm -f %{buildroot}/usr/bin/haswell/xzmore
 /usr/include/lzma/stream_flags.h
 /usr/include/lzma/version.h
 /usr/include/lzma/vli.h
+/usr/lib64/haswell/avx512_1/liblzma.so
 /usr/lib64/haswell/liblzma.so
 /usr/lib64/liblzma.so
 /usr/lib64/pkgconfig/liblzma.pc
@@ -322,6 +365,8 @@ rm -f %{buildroot}/usr/bin/haswell/xzmore
 
 %files lib
 %defattr(-,root,root,-)
+/usr/lib64/haswell/avx512_1/liblzma.so.5
+/usr/lib64/haswell/avx512_1/liblzma.so.5.2.5
 /usr/lib64/haswell/liblzma.so.5
 /usr/lib64/haswell/liblzma.so.5.2.5
 /usr/lib64/liblzma.so.5
