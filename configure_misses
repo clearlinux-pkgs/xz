@@ -1,10 +1,16 @@
 Configure miss: 32-bit host C ABI
 Configure miss: 32-bit host C ABI
 Configure miss: 32-bit host C ABI
+Configure miss: 32-bit host C ABI
+Configure miss: 32-bit host C ABI
 Configure miss: CFLocaleCopyPreferredLanguages
 Configure miss: CFLocaleCopyPreferredLanguages
 Configure miss: CFLocaleCopyPreferredLanguages
 Configure miss: CFLocaleCopyPreferredLanguages
+Configure miss: CFLocaleCopyPreferredLanguages
+Configure miss: CFLocaleCopyPreferredLanguages
+Configure miss: gcc options needed to detect all undeclared functions
+Configure miss: gcc options needed to detect all undeclared functions
 Configure miss: gcc options needed to detect all undeclared functions
 Configure miss: gcc options needed to detect all undeclared functions
 Configure miss: gcc options needed to detect all undeclared functions
@@ -14,6 +20,10 @@ Configure miss: if debugging code should be compiled
 Configure miss: if debugging code should be compiled
 Configure miss: if debugging code should be compiled
 Configure miss: if debugging code should be compiled
+Configure miss: if debugging code should be compiled
+Configure miss: if debugging code should be compiled
+Configure miss: if external SHA-256 should be used
+Configure miss: if external SHA-256 should be used
 Configure miss: if external SHA-256 should be used
 Configure miss: if external SHA-256 should be used
 Configure miss: if external SHA-256 should be used
@@ -22,6 +32,10 @@ Configure miss: if small size is preferred over speed
 Configure miss: if small size is preferred over speed
 Configure miss: if small size is preferred over speed
 Configure miss: if small size is preferred over speed
+Configure miss: if small size is preferred over speed
+Configure miss: if small size is preferred over speed
+Configure miss: if unsafe type punning should be used
+Configure miss: if unsafe type punning should be used
 Configure miss: if unsafe type punning should be used
 Configure miss: if unsafe type punning should be used
 Configure miss: if unsafe type punning should be used
@@ -30,6 +44,10 @@ Configure miss: struct stat.st_atim.st__tim.tv_nsec
 Configure miss: struct stat.st_atim.st__tim.tv_nsec
 Configure miss: struct stat.st_atim.st__tim.tv_nsec
 Configure miss: struct stat.st_atim.st__tim.tv_nsec
+Configure miss: struct stat.st_atim.st__tim.tv_nsec
+Configure miss: struct stat.st_atim.st__tim.tv_nsec
+Configure miss: struct stat.st_atimensec
+Configure miss: struct stat.st_atimensec
 Configure miss: struct stat.st_atimensec
 Configure miss: struct stat.st_atimensec
 Configure miss: struct stat.st_atimensec
@@ -38,6 +56,10 @@ Configure miss: struct stat.st_atimespec.tv_nsec
 Configure miss: struct stat.st_atimespec.tv_nsec
 Configure miss: struct stat.st_atimespec.tv_nsec
 Configure miss: struct stat.st_atimespec.tv_nsec
+Configure miss: struct stat.st_atimespec.tv_nsec
+Configure miss: struct stat.st_atimespec.tv_nsec
+Configure miss: struct stat.st_uatime
+Configure miss: struct stat.st_uatime
 Configure miss: struct stat.st_uatime
 Configure miss: struct stat.st_uatime
 Configure miss: struct stat.st_uatime
@@ -46,6 +68,10 @@ Configure miss: sys/capsicum.h
 Configure miss: sys/capsicum.h
 Configure miss: sys/capsicum.h
 Configure miss: sys/capsicum.h
+Configure miss: sys/capsicum.h
+Configure miss: sys/capsicum.h
+Configure miss: whether cap_rights_limit is declared
+Configure miss: whether cap_rights_limit is declared
 Configure miss: whether cap_rights_limit is declared
 Configure miss: whether cap_rights_limit is declared
 Configure miss: whether cap_rights_limit is declared
@@ -54,6 +80,10 @@ Configure miss: whether optreset is declared
 Configure miss: whether optreset is declared
 Configure miss: whether optreset is declared
 Configure miss: whether optreset is declared
+Configure miss: whether optreset is declared
+Configure miss: whether optreset is declared
+Configure miss: windres
+Configure miss: windres
 Configure miss: windres
 Configure miss: windres
 Configure miss: windres
