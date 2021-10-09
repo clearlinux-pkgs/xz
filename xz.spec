@@ -7,7 +7,7 @@
 %define keepstatic 1
 Name     : xz
 Version  : 5.2.5
-Release  : 59
+Release  : 60
 URL      : https://tukaani.org/xz/xz-5.2.5.tar.xz
 Source0  : https://tukaani.org/xz/xz-5.2.5.tar.xz
 Source1  : https://tukaani.org/xz/xz-5.2.5.tar.xz.sig
@@ -15,6 +15,7 @@ Summary  : General purpose data compression library
 Group    : Development/Tools
 License  : GPL-2.0 GPL-3.0 LGPL-2.1 Public-Domain
 Requires: xz-bin = %{version}-%{release}
+Requires: xz-filemap = %{version}-%{release}
 Requires: xz-lib = %{version}-%{release}
 Requires: xz-license = %{version}-%{release}
 Requires: xz-locales = %{version}-%{release}
@@ -55,6 +56,7 @@ XZ Utils
 Summary: bin components for the xz package.
 Group: Binaries
 Requires: xz-license = %{version}-%{release}
+Requires: xz-filemap = %{version}-%{release}
 
 %description bin
 bin components for the xz package.
@@ -92,10 +94,19 @@ Requires: xz-man = %{version}-%{release}
 doc components for the xz package.
 
 
+%package filemap
+Summary: filemap components for the xz package.
+Group: Default
+
+%description filemap
+filemap components for the xz package.
+
+
 %package lib
 Summary: lib components for the xz package.
 Group: Libraries
 Requires: xz-license = %{version}-%{release}
+Requires: xz-filemap = %{version}-%{release}
 
 %description lib
 lib components for the xz package.
@@ -174,15 +185,15 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1633018618
+export SOURCE_DATE_EPOCH=1633808129
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
-export FCFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
-export FFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
-export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
+export CFLAGS="$CFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mno-vzeroupper -mprefer-vector-width=256 "
+export FCFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mno-vzeroupper -mprefer-vector-width=256 "
+export FFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mno-vzeroupper -mprefer-vector-width=256 "
+export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mno-vzeroupper -mprefer-vector-width=256 "
 %reconfigure  --enable-assume-ram=1024
 make  %{?_smp_mflags}  pgo-build
 pushd ../build32/
@@ -206,11 +217,11 @@ make  %{?_smp_mflags}  pgo-build
 popd
 unset PKG_CONFIG_PATH
 pushd ../buildavx512/
-export CFLAGS="$CFLAGS -m64 -march=skylake-avx512 -mprefer-vector-width=256"
-export CXXFLAGS="$CXXFLAGS -m64 -march=skylake-avx512 -mprefer-vector-width=256"
-export FFLAGS="$FFLAGS -m64 -march=skylake-avx512 -mprefer-vector-width=256"
-export FCFLAGS="$FCFLAGS -m64 -march=skylake-avx512 -mprefer-vector-width=256"
-export LDFLAGS="$LDFLAGS -m64 -march=skylake-avx512"
+export CFLAGS="$CFLAGS -m64 -march=x86-64-v4 -mprefer-vector-width=256"
+export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v4 -mprefer-vector-width=256"
+export FFLAGS="$FFLAGS -m64 -march=x86-64-v4 -mprefer-vector-width=256"
+export FCFLAGS="$FCFLAGS -m64 -march=x86-64-v4 -mprefer-vector-width=256"
+export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v4"
 %reconfigure  --enable-assume-ram=1024
 make  %{?_smp_mflags}  pgo-build
 popd
@@ -229,7 +240,7 @@ cd ../buildavx512;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1633018618
+export SOURCE_DATE_EPOCH=1633808129
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/xz
 cp %{_builddir}/xz-5.2.5/COPYING %{buildroot}/usr/share/package-licenses/xz/66933e63e70616b43f1dc60340491f8e050eedfd
@@ -251,11 +262,13 @@ for i in *.pc ; do ln -s $i 32$i ; done
 popd
 fi
 popd
-pushd ../buildavx512/
-%make_install_avx512
-popd
 pushd ../buildavx2/
-%make_install_avx2
+%make_install_v3
+/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot}/usr/share/clear/optimized-elf/ %{buildroot}/usr/share/clear/filemap/filemap-%{name}
+popd
+pushd ../buildavx512/
+%make_install_v4
+/usr/bin/elf-move.py avx512 %{buildroot}-v4 %{buildroot}/usr/share/clear/optimized-elf/ %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 popd
 %make_install
 %find_lang xz
@@ -330,6 +343,7 @@ rm -f %{buildroot}/usr/bin/haswell/xzdec
 /usr/bin/xzgrep
 /usr/bin/xzless
 /usr/bin/xzmore
+/usr/share/clear/optimized-elf/bin*
 
 %files dev
 %defattr(-,root,root,-)
@@ -348,8 +362,6 @@ rm -f %{buildroot}/usr/bin/haswell/xzdec
 /usr/include/lzma/stream_flags.h
 /usr/include/lzma/version.h
 /usr/include/lzma/vli.h
-/usr/lib64/haswell/avx512_1/liblzma.so
-/usr/lib64/haswell/liblzma.so
 /usr/lib64/liblzma.so
 /usr/lib64/pkgconfig/liblzma.pc
 
@@ -363,14 +375,15 @@ rm -f %{buildroot}/usr/bin/haswell/xzdec
 %defattr(0644,root,root,0755)
 %doc /usr/share/doc/xz/*
 
+%files filemap
+%defattr(-,root,root,-)
+/usr/share/clear/filemap/filemap-xz
+
 %files lib
 %defattr(-,root,root,-)
-/usr/lib64/haswell/avx512_1/liblzma.so.5
-/usr/lib64/haswell/avx512_1/liblzma.so.5.2.5
-/usr/lib64/haswell/liblzma.so.5
-/usr/lib64/haswell/liblzma.so.5.2.5
 /usr/lib64/liblzma.so.5
 /usr/lib64/liblzma.so.5.2.5
+/usr/share/clear/optimized-elf/lib*
 
 %files lib32
 %defattr(-,root,root,-)
