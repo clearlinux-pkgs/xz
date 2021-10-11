@@ -7,7 +7,7 @@
 %define keepstatic 1
 Name     : xz
 Version  : 5.2.5
-Release  : 60
+Release  : 61
 URL      : https://tukaani.org/xz/xz-5.2.5.tar.xz
 Source0  : https://tukaani.org/xz/xz-5.2.5.tar.xz
 Source1  : https://tukaani.org/xz/xz-5.2.5.tar.xz.sig
