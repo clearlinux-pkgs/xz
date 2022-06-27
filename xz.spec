@@ -7,7 +7,7 @@
 %define keepstatic 1
 Name     : xz
 Version  : 5.2.5
-Release  : 64
+Release  : 65
 URL      : https://tukaani.org/xz/xz-5.2.5.tar.xz
 Source0  : https://tukaani.org/xz/xz-5.2.5.tar.xz
 Source1  : https://tukaani.org/xz/xz-5.2.5.tar.xz.sig
@@ -185,15 +185,15 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1634687034
+export SOURCE_DATE_EPOCH=1656342847
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mno-vzeroupper -mprefer-vector-width=256 "
-export FCFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mno-vzeroupper -mprefer-vector-width=256 "
-export FFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mno-vzeroupper -mprefer-vector-width=256 "
-export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mno-vzeroupper -mprefer-vector-width=256 "
+export CFLAGS="$CFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
+export FCFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
+export FFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
+export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
 %reconfigure  --enable-assume-ram=1024
 make  %{?_smp_mflags}  pgo-build
 pushd ../build32/
@@ -240,7 +240,7 @@ cd ../buildavx512;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1634687034
+export SOURCE_DATE_EPOCH=1656342847
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/xz
 cp %{_builddir}/xz-5.2.5/COPYING %{buildroot}/usr/share/package-licenses/xz/66933e63e70616b43f1dc60340491f8e050eedfd
@@ -312,8 +312,8 @@ rm -f %{buildroot}*/usr/bin/haswell/unxz
 rm -f %{buildroot}*/usr/bin/haswell/xz
 rm -f %{buildroot}*/usr/bin/haswell/xzcat
 rm -f %{buildroot}*/usr/bin/haswell/xzdec
-/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot}/usr/share/clear/optimized-elf/ %{buildroot}/usr/share/clear/filemap/filemap-%{name}
-/usr/bin/elf-move.py avx512 %{buildroot}-v4 %{buildroot}/usr/share/clear/optimized-elf/ %{buildroot}/usr/share/clear/filemap/filemap-%{name}
+/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot} %{buildroot}/usr/share/clear/filemap/filemap-%{name}
+/usr/bin/elf-move.py avx512 %{buildroot}-v4 %{buildroot} %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 
 %files
 %defattr(-,root,root,-)
@@ -362,6 +362,8 @@ rm -f %{buildroot}*/usr/bin/haswell/xzdec
 /usr/include/lzma/stream_flags.h
 /usr/include/lzma/version.h
 /usr/include/lzma/vli.h
+/usr/lib64/glibc-hwcaps/x86-64-v3/liblzma.so
+/usr/lib64/glibc-hwcaps/x86-64-v4/liblzma.so
 /usr/lib64/liblzma.so
 /usr/lib64/pkgconfig/liblzma.pc
 
@@ -381,9 +383,12 @@ rm -f %{buildroot}*/usr/bin/haswell/xzdec
 
 %files lib
 %defattr(-,root,root,-)
+/usr/lib64/glibc-hwcaps/x86-64-v3/liblzma.so.5
+/usr/lib64/glibc-hwcaps/x86-64-v3/liblzma.so.5.2.5
+/usr/lib64/glibc-hwcaps/x86-64-v4/liblzma.so.5
+/usr/lib64/glibc-hwcaps/x86-64-v4/liblzma.so.5.2.5
 /usr/lib64/liblzma.so.5
 /usr/lib64/liblzma.so.5.2.5
-/usr/share/clear/optimized-elf/lib*
 
 %files lib32
 %defattr(-,root,root,-)

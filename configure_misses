@@ -9,6 +9,7 @@ Configure miss: gcc options needed to detect all undeclared functions
 Configure miss: gcc options needed to detect all undeclared functions
 Configure miss: gcc options needed to detect all undeclared functions
 Configure miss: gcc options needed to detect all undeclared functions
+Configure miss: i686-generic-linux-gnu-file
 Configure miss: i686-generic-linux-gnu-windres
 Configure miss: if debugging code should be compiled
 Configure miss: if debugging code should be compiled
@@ -58,3 +59,6 @@ Configure miss: windres
 Configure miss: windres
 Configure miss: windres
 Configure miss: windres
+Configure miss: x86_64-generic-linux-gnu-file
+Configure miss: x86_64-generic-linux-gnu-file
+Configure miss: x86_64-generic-linux-gnu-file
