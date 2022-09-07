@@ -7,7 +7,7 @@
 %define keepstatic 1
 Name     : xz
 Version  : 5.2.6
-Release  : 70
+Release  : 71
 URL      : https://tukaani.org/xz/xz-5.2.6.tar.xz
 Source0  : https://tukaani.org/xz/xz-5.2.6.tar.xz
 Source1  : https://tukaani.org/xz/xz-5.2.6.tar.xz.sig
@@ -185,7 +185,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1661272868
+export SOURCE_DATE_EPOCH=1662581050
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -240,13 +240,13 @@ cd ../buildavx512;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1661272868
+export SOURCE_DATE_EPOCH=1662581050
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/xz
-cp %{_builddir}/xz-%{version}/COPYING %{buildroot}/usr/share/package-licenses/xz/66933e63e70616b43f1dc60340491f8e050eedfd
-cp %{_builddir}/xz-%{version}/COPYING.GPLv2 %{buildroot}/usr/share/package-licenses/xz/4cc77b90af91e615a64ae04893fdffa7939db84c
-cp %{_builddir}/xz-%{version}/COPYING.GPLv3 %{buildroot}/usr/share/package-licenses/xz/8624bcdae55baeef00cd11d5dfcfa60f68710a02
-cp %{_builddir}/xz-%{version}/COPYING.LGPLv2.1 %{buildroot}/usr/share/package-licenses/xz/01a6b4bf79aca9b556822601186afab86e8c4fbf
+cp %{_builddir}/xz-%{version}/COPYING %{buildroot}/usr/share/package-licenses/xz/66933e63e70616b43f1dc60340491f8e050eedfd || :
+cp %{_builddir}/xz-%{version}/COPYING.GPLv2 %{buildroot}/usr/share/package-licenses/xz/4cc77b90af91e615a64ae04893fdffa7939db84c || :
+cp %{_builddir}/xz-%{version}/COPYING.GPLv3 %{buildroot}/usr/share/package-licenses/xz/8624bcdae55baeef00cd11d5dfcfa60f68710a02 || :
+cp %{_builddir}/xz-%{version}/COPYING.LGPLv2.1 %{buildroot}/usr/share/package-licenses/xz/01a6b4bf79aca9b556822601186afab86e8c4fbf || :
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -270,48 +270,6 @@ pushd ../buildavx512/
 popd
 %make_install
 %find_lang xz
-## Remove excluded files
-rm -f %{buildroot}*/usr/bin/x86-64-v3/lzcat
-rm -f %{buildroot}*/usr/bin/x86-64-v3/lzcmp
-rm -f %{buildroot}*/usr/bin/x86-64-v3/lzdiff
-rm -f %{buildroot}*/usr/bin/x86-64-v3/lzegrep
-rm -f %{buildroot}*/usr/bin/x86-64-v3/lzfgrep
-rm -f %{buildroot}*/usr/bin/x86-64-v3/lzgrep
-rm -f %{buildroot}*/usr/bin/x86-64-v3/lzless
-rm -f %{buildroot}*/usr/bin/x86-64-v3/lzma
-rm -f %{buildroot}*/usr/bin/x86-64-v3/lzmadec
-rm -f %{buildroot}*/usr/bin/x86-64-v3/lzmainfo
-rm -f %{buildroot}*/usr/bin/x86-64-v3/lzmore
-rm -f %{buildroot}*/usr/bin/x86-64-v3/unlzma
-rm -f %{buildroot}*/usr/bin/x86-64-v3/unxz
-rm -f %{buildroot}*/usr/bin/x86-64-v3/xz
-rm -f %{buildroot}*/usr/bin/x86-64-v3/xzcat
-rm -f %{buildroot}*/usr/bin/x86-64-v3/xzcmp
-rm -f %{buildroot}*/usr/bin/x86-64-v3/xzdec
-rm -f %{buildroot}*/usr/bin/x86-64-v3/xzdiff
-rm -f %{buildroot}*/usr/bin/x86-64-v3/xzegrep
-rm -f %{buildroot}*/usr/bin/x86-64-v3/xzfgrep
-rm -f %{buildroot}*/usr/bin/x86-64-v3/xzgrep
-rm -f %{buildroot}*/usr/bin/x86-64-v3/xzless
-rm -f %{buildroot}*/usr/bin/x86-64-v3/xzmore
-rm -f %{buildroot}*/usr/bin/haswell/avx512_1/lzcat
-rm -f %{buildroot}*/usr/bin/haswell/avx512_1/lzma
-rm -f %{buildroot}*/usr/bin/haswell/avx512_1/lzmadec
-rm -f %{buildroot}*/usr/bin/haswell/avx512_1/lzmainfo
-rm -f %{buildroot}*/usr/bin/haswell/avx512_1/unlzma
-rm -f %{buildroot}*/usr/bin/haswell/avx512_1/unxz
-rm -f %{buildroot}*/usr/bin/haswell/avx512_1/xz
-rm -f %{buildroot}*/usr/bin/haswell/avx512_1/xzcat
-rm -f %{buildroot}*/usr/bin/haswell/avx512_1/xzdec
-rm -f %{buildroot}*/usr/bin/haswell/lzcat
-rm -f %{buildroot}*/usr/bin/haswell/lzma
-rm -f %{buildroot}*/usr/bin/haswell/lzmadec
-rm -f %{buildroot}*/usr/bin/haswell/lzmainfo
-rm -f %{buildroot}*/usr/bin/haswell/unlzma
-rm -f %{buildroot}*/usr/bin/haswell/unxz
-rm -f %{buildroot}*/usr/bin/haswell/xz
-rm -f %{buildroot}*/usr/bin/haswell/xzcat
-rm -f %{buildroot}*/usr/bin/haswell/xzdec
 /usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot} %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 /usr/bin/elf-move.py avx512 %{buildroot}-v4 %{buildroot} %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 
