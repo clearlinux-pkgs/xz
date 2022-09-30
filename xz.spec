@@ -6,11 +6,11 @@
 #
 %define keepstatic 1
 Name     : xz
-Version  : 5.2.6
-Release  : 74
-URL      : https://tukaani.org/xz/xz-5.2.6.tar.xz
-Source0  : https://tukaani.org/xz/xz-5.2.6.tar.xz
-Source1  : https://tukaani.org/xz/xz-5.2.6.tar.xz.sig
+Version  : 5.2.7
+Release  : 75
+URL      : https://tukaani.org/xz/xz-5.2.7.tar.xz
+Source0  : https://tukaani.org/xz/xz-5.2.7.tar.xz
+Source1  : https://tukaani.org/xz/xz-5.2.7.tar.xz.sig
 Summary  : General purpose data compression library
 Group    : Development/Tools
 License  : GPL-2.0 GPL-3.0 LGPL-2.1 Public-Domain
@@ -164,20 +164,20 @@ staticdev32 components for the xz package.
 
 
 %prep
-%setup -q -n xz-5.2.6
-cd %{_builddir}/xz-5.2.6
+%setup -q -n xz-5.2.7
+cd %{_builddir}/xz-5.2.7
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
 %patch4 -p2
 pushd ..
-cp -a xz-5.2.6 build32
+cp -a xz-5.2.7 build32
 popd
 pushd ..
-cp -a xz-5.2.6 buildavx2
+cp -a xz-5.2.7 buildavx2
 popd
 pushd ..
-cp -a xz-5.2.6 buildavx512
+cp -a xz-5.2.7 buildavx512
 popd
 
 %build
@@ -185,7 +185,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1664079085
+export SOURCE_DATE_EPOCH=1664556775
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -240,13 +240,13 @@ cd ../buildavx512;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1664079085
+export SOURCE_DATE_EPOCH=1664556775
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/xz
-cp %{_builddir}/xz-%{version}/COPYING %{buildroot}/usr/share/package-licenses/xz/66933e63e70616b43f1dc60340491f8e050eedfd
-cp %{_builddir}/xz-%{version}/COPYING.GPLv2 %{buildroot}/usr/share/package-licenses/xz/4cc77b90af91e615a64ae04893fdffa7939db84c
-cp %{_builddir}/xz-%{version}/COPYING.GPLv3 %{buildroot}/usr/share/package-licenses/xz/8624bcdae55baeef00cd11d5dfcfa60f68710a02
-cp %{_builddir}/xz-%{version}/COPYING.LGPLv2.1 %{buildroot}/usr/share/package-licenses/xz/01a6b4bf79aca9b556822601186afab86e8c4fbf
+cp %{_builddir}/xz-%{version}/COPYING %{buildroot}/usr/share/package-licenses/xz/66933e63e70616b43f1dc60340491f8e050eedfd || :
+cp %{_builddir}/xz-%{version}/COPYING.GPLv2 %{buildroot}/usr/share/package-licenses/xz/4cc77b90af91e615a64ae04893fdffa7939db84c || :
+cp %{_builddir}/xz-%{version}/COPYING.GPLv3 %{buildroot}/usr/share/package-licenses/xz/8624bcdae55baeef00cd11d5dfcfa60f68710a02 || :
+cp %{_builddir}/xz-%{version}/COPYING.LGPLv2.1 %{buildroot}/usr/share/package-licenses/xz/01a6b4bf79aca9b556822601186afab86e8c4fbf || :
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -342,16 +342,16 @@ popd
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/glibc-hwcaps/x86-64-v3/liblzma.so.5
-/usr/lib64/glibc-hwcaps/x86-64-v3/liblzma.so.5.2.6
+/usr/lib64/glibc-hwcaps/x86-64-v3/liblzma.so.5.2.7
 /usr/lib64/glibc-hwcaps/x86-64-v4/liblzma.so.5
-/usr/lib64/glibc-hwcaps/x86-64-v4/liblzma.so.5.2.6
+/usr/lib64/glibc-hwcaps/x86-64-v4/liblzma.so.5.2.7
 /usr/lib64/liblzma.so.5
-/usr/lib64/liblzma.so.5.2.6
+/usr/lib64/liblzma.so.5.2.7
 
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/liblzma.so.5
-/usr/lib32/liblzma.so.5.2.6
+/usr/lib32/liblzma.so.5.2.7
 
 %files license
 %defattr(0644,root,root,0755)

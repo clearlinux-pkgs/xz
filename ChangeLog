@@ -1,3 +1,459 @@
+commit d24a57b7fc7e5e9267b84367cb0788d3acf7f569
+Author: Lasse Collin <lasse.collin@tukaani.org>
+Date:   2022-09-30 16:41:03 +0300
+
+    Bump version and soname for 5.2.7.
+
+ src/liblzma/Makefile.am        | 2 +-
+ src/liblzma/api/lzma/version.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+commit d2003362dd42004355a5550ee7a60ace3b3ea2d8
+Author: Lasse Collin <lasse.collin@tukaani.org>
+Date:   2022-09-30 16:40:39 +0300
+
+    Add NEWS for 5.2.7.
+
+ NEWS | 74 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 74 insertions(+)
+
+commit 369afb51991e91a5c3a23c4ae3872329a403eb31
+Author: Lasse Collin <lasse.collin@tukaani.org>
+Date:   2022-09-30 12:06:13 +0300
+
+    liblzma: Add API doc note about the .xz decoder LZMA_MEMLIMIT_ERROR bug.
+    
+    The bug was fixed in 660739f99ab211edec4071de98889fb32ed04e98.
+
+ src/liblzma/api/lzma/base.h | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+commit 166431e9951613481b8136f52b570d7bc30b5a03
+Author: Jia Tan <jiat0218@gmail.com>
+Date:   2022-09-21 16:15:50 +0800
+
+    liblzma: Add dest and src NULL checks to lzma_index_cat.
+    
+    The documentation states LZMA_PROG_ERROR can be returned from
+    lzma_index_cat. Previously, lzma_index_cat could not return
+    LZMA_PROG_ERROR. Now, the validation is similar to
+    lzma_index_append, which does a NULL check on the index
+    parameter.
+
+ src/liblzma/common/index.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+commit 5e53a6c28b87a0bb9b0cfeaf708cc99ef8e9bc66
+Author: Jia Tan <jiat0218@gmail.com>
+Date:   2022-09-21 20:29:28 +0800
+
+    Tests: Create a test for the lzma_index_cat bug.
+
+ tests/test_index.c | 43 ++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 42 insertions(+), 1 deletion(-)
+
+commit 4ed5fd54c676b735e3f58158f214af68755d59b5
+Author: Jia Tan <jiat0218@gmail.com>
+Date:   2022-09-21 19:28:53 +0800
+
+    liblzma: Fix copying of check type statistics in lzma_index_cat().
+    
+    The check type of the last Stream in dest was never copied to
+    dest->checks (the code tried to copy it but it was done too late).
+    This meant that the value returned by lzma_index_checks() would
+    only include the check type of the last Stream when multiple
+    lzma_indexes had been concatenated.
+    
+    In xz --list this meant that the summary would only list the
+    check type of the last Stream, so in this sense this was only
+    a visual bug. However, it's possible that some applications
+    use this information for purposes other than merely showing
+    it to the users in an informational message. I'm not aware of
+    such applications though and it's quite possible that such
+    applications don't exist.
+    
+    Regular streamed decompression in xz or any other application
+    doesn't use lzma_index_cat() and so this bug cannot affect them.
+
+ src/liblzma/common/index.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+commit c4476f695291a2d7376d5fa406d32e354f858858
+Author: Lasse Collin <lasse.collin@tukaani.org>
+Date:   2022-09-28 12:20:41 +0300
+
+    tuklib_physmem: Fix Unicode builds on Windows.
+    
+    Thanks to ArSaCiA Game.
+
+ src/common/tuklib_physmem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 976f897bbba9890a99f01a8d59c6d59c230142e6
+Author: Lasse Collin <lasse.collin@tukaani.org>
+Date:   2022-09-28 11:05:15 +0300
+
+    liblzma: Stream decoder: Fix restarting after LZMA_MEMLIMIT_ERROR.
+    
+    If lzma_code() returns LZMA_MEMLIMIT_ERROR it is now possible
+    to use lzma_memlimit_set() to increase the limit and continue
+    decoding. This was supposed to work from the beginning but
+    there was a bug. With other decoders (.lzma or threaded .xz)
+    this already worked correctly.
+
+ src/liblzma/common/stream_decoder.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
+
+commit 2caa9580e5f7c5cc6668e9427a2c21f3f63bb684
+Author: Lasse Collin <lasse.collin@tukaani.org>
+Date:   2022-09-28 11:00:23 +0300
+
+    liblzma: Stream decoder: Fix comments.
+
+ src/liblzma/common/stream_decoder.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
+
+commit 51882fec5b96cf7760389b670d86c1e7a5a0ced2
+Author: Lasse Collin <lasse.collin@tukaani.org>
+Date:   2022-09-16 14:09:07 +0300
+
+    Update THANKS.
+
+ THANKS | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit 974186f7cd839f1dbf937b98e112dff670d2bd5c
+Author: Lasse Collin <lasse.collin@tukaani.org>
+Date:   2022-09-16 14:07:03 +0300
+
+    xzgrep: Fix compatibility with old shells.
+    
+    Running the current xzgrep on Slackware 10.1 with GNU bash 3.00.15:
+    
+        xzgrep: line 231: syntax error near unexpected token `;;'
+    
+    On SCO OpenServer 5.0.7 with Korn Shell 93r:
+    
+        syntax error at line 231 : `;;' unexpected
+    
+    Turns out that some old shells don't like apostrophes (') inside
+    command substitutions. For example, the following fails:
+    
+        x=$(echo foo
+        # asdf'zxcv
+        echo bar)
+        printf '%s\n' "$x"
+    
+    The problem was introduced by commits
+    69d1b3fc29677af8ade8dc15dba83f0589cb63d6 (2022-03-29),
+    bd7b290f3fe4faeceb7d3497ed9bf2e6ed5e7dc5 (2022-07-18), and
+    a648978b20495b7aa4a8b029c5a810b5ad9d08ff (2022-07-19).
+    5.2.6 is the only stable release that included
+    this problem.
+    
+    Thanks to Kevin R. Bulgrien for reporting the problem
+    on SCO OpenServer 5.0.7 and for providing the fix.
+
+ src/scripts/xzgrep.in | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit f94da15120c3d3c363ca12c2262ac6cb9f321f4f
+Author: Lasse Collin <lasse.collin@tukaani.org>
+Date:   2022-09-09 13:51:57 +0300
+
+    liblzma: lzma_filters_copy: Keep dest[] unmodified if an error occurs.
+    
+    lzma_stream_encoder() and lzma_stream_encoder_mt() always assumed
+    this. Before this patch, failing lzma_filters_copy() could result
+    in free(invalid_pointer) or invalid memory reads in stream_encoder.c
+    or stream_encoder_mt.c.
+    
+    To trigger this, allocating memory for a filter options structure
+    has to fail. These are tiny allocations so in practice they very
+    rarely fail.
+    
+    Certain badness in the filter chain array could also make
+    lzma_filters_copy() fail but both stream_encoder.c and
+    stream_encoder_mt.c validate the filter chain before
+    trying to copy it, so the crash cannot occur this way.
+
+ src/liblzma/api/lzma/filter.h      |  4 +++-
+ src/liblzma/common/filter_common.c | 18 ++++++++++++------
+ 2 files changed, 15 insertions(+), 7 deletions(-)
+
+commit ea57b9aa2c3e1cdb667f8dd698314b1c36047018
+Author: Lasse Collin <lasse.collin@tukaani.org>
+Date:   2022-09-16 17:08:53 +0300
+
+    Tests: Add a test file for lzma_index_append() integer overflow bug.
+    
+    This test fails before commit 18d7facd3802b55c287581405c4d49c98708c136.
+    
+    test_files.sh now runs xz -l for bad-3-index-uncomp-overflow.xz
+    because only then the previously-buggy code path gets tested.
+    Normal decompression doesn't use lzma_index_append() at all.
+    Instead, lzma_index_hash functions are used and those already
+    did the overflow check.
+
+ tests/files/README                         |  10 ++++++++++
+ tests/files/bad-3-index-uncomp-overflow.xz | Bin 0 -> 132 bytes
+ tests/test_files.sh                        |   8 ++++++++
+ 3 files changed, 18 insertions(+)
+
+commit 72e1645a439a999638a63ec9abb7210671ea5415
+Author: Jia Tan <jiat0218@gmail.com>
+Date:   2022-09-02 20:18:55 +0800
+
+    liblzma: lzma_index_append: Add missing integer overflow check.
+    
+    The documentation in src/liblzma/api/lzma/index.h suggests that
+    both the unpadded (compressed) size and the uncompressed size
+    are checked for overflow, but only the unpadded size was checked.
+    The uncompressed check is done first since that is more likely to
+    occur than the unpadded or index field size overflows.
+
+ src/liblzma/common/index.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+commit 20d82bc90781aa9d2373efe872d90ba64dc7dc62
+Author: Lasse Collin <lasse.collin@tukaani.org>
+Date:   2022-09-08 15:11:08 +0300
+
+    Update THANKS.
+
+ THANKS | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit 31d80c6b261b24220776dfaeb8a04f80f80e0a24
+Author: Lasse Collin <lasse.collin@tukaani.org>
+Date:   2022-09-04 23:23:00 +0300
+
+    liblzma: Vaccinate against an ill patch from RHEL/CentOS 7.
+    
+    RHEL/CentOS 7 shipped with 5.1.2alpha, including the threaded
+    encoder that is behind #ifdef LZMA_UNSTABLE in the API headers.
+    In 5.1.2alpha these symbols are under XZ_5.1.2alpha in liblzma.map.
+    API/ABI compatibility tracking isn't done between development
+    releases so newer releases didn't have XZ_5.1.2alpha anymore.
+    
+    Later RHEL/CentOS 7 updated xz to 5.2.2 but they wanted to keep
+    the exported symbols compatible with 5.1.2alpha. After checking
+    the ABI changes it turned out that >= 5.2.0 ABI is backward
+    compatible with the threaded encoder functions from 5.1.2alpha
+    (but not vice versa as fixes and extensions to these functions
+    were made between 5.1.2alpha and 5.2.0).
+    
+    In RHEL/CentOS 7, XZ Utils 5.2.2 was patched with
+    xz-5.2.2-compat-libs.patch to modify liblzma.map:
+    
+      - XZ_5.1.2alpha was added with lzma_stream_encoder_mt and
+        lzma_stream_encoder_mt_memusage. This matched XZ Utils 5.1.2alpha.
+    
+      - XZ_5.2 was replaced with XZ_5.2.2. It is clear that this was
+        an error; the intention was to keep using XZ_5.2 (XZ_5.2.2
+        has never been used in XZ Utils). So XZ_5.2.2 lists all
+        symbols that were listed under XZ_5.2 before the patch.
+        lzma_stream_encoder_mt and _mt_memusage are included too so
+        they are listed both here and under XZ_5.1.2alpha.
+    
+    The patch didn't add any __asm__(".symver ...") lines to the .c
+    files. Thus the resulting liblzma.so exports the threaded encoder
+    functions under XZ_5.1.2alpha only. Listing the two functions
+    also under XZ_5.2.2 in liblzma.map has no effect without
+    matching .symver lines.
+    
+    The lack of XZ_5.2 in RHEL/CentOS 7 means that binaries linked
+    against unpatched XZ Utils 5.2.x won't run on RHEL/CentOS 7.
+    This is unfortunate but this alone isn't too bad as the problem
+    is contained within RHEL/CentOS 7 and doesn't affect users
+    of other distributions. It could also be fixed internally in
+    RHEL/CentOS 7.
+    
+    The second problem is more serious: In XZ Utils 5.2.2 the API
+    headers don't have #ifdef LZMA_UNSTABLE for obvious reasons.
+    This is true in RHEL/CentOS 7 version too. Thus now programs
+    using new APIs can be compiled without an extra #define. However,
+    the programs end up depending on symbol version XZ_5.1.2alpha
+    (and possibly also XZ_5.2.2) instead of XZ_5.2 as they would
+    with an unpatched XZ Utils 5.2.2. This means that such binaries
+    won't run on other distributions shipping XZ Utils >= 5.2.0 as
+    they don't provide XZ_5.1.2alpha or XZ_5.2.2; they only provide
+    XZ_5.2 (and XZ_5.0). (This includes RHEL/CentOS 8 as the patch
+    luckily isn't included there anymore with XZ Utils 5.2.4.)
+    
+    Binaries built by RHEL/CentOS 7 users get distributed and then
+    people wonder why they don't run on some other distribution.
+    Seems that people have found out about the patch and been copying
+    it to some build scripts, seemingly curing the symptoms but
+    actually spreading the illness further and outside RHEL/CentOS 7.
+    
+    The ill patch seems to be from late 2016 (RHEL 7.3) and in 2017 it
+    had spread at least to EasyBuild. I heard about the events only
+    recently. :-(
+    
+    This commit splits liblzma.map into two versions: one for
+    GNU/Linux and another for other OSes that can use symbol versioning
+    (FreeBSD, Solaris, maybe others). The Linux-specific file and the
+    matching additions to .c files add full compatibility with binaries
+    that have been built against a RHEL/CentOS-patched liblzma. Builds
+    for OSes other than GNU/Linux won't get the vaccine as they should
+    be immune to the problem (I really hope that no build script uses
+    the RHEL/CentOS 7 patch outside GNU/Linux).
+    
+    The RHEL/CentOS compatibility symbols XZ_5.1.2alpha and XZ_5.2.2
+    are intentionally put *after* XZ_5.2 in liblzma_linux.map. This way
+    if one forgets to #define HAVE_SYMBOL_VERSIONS_LINUX when building,
+    the resulting liblzma.so.5 will have lzma_stream_encoder_mt@@XZ_5.2
+    since XZ_5.2 {...} is the first one that lists that function.
+    Without HAVE_SYMBOL_VERSIONS_LINUX @XZ_5.1.2alpha and @XZ_5.2.2
+    will be missing but that's still a minor problem compared to
+    only having lzma_stream_encoder_mt@@XZ_5.1.2alpha!
+    
+    The "local: *;" line was moved to XZ_5.0 so that it doesn't need
+    to be moved around. It doesn't matter where it is put.
+    
+    Having two similar liblzma_*.map files is a bit silly as it is,
+    at least for now, easily possible to generate the generic one
+    from the Linux-specific file. But that adds extra steps and
+    increases the risk of mistakes when supporting more than one
+    build system. So I rather maintain two files in parallel and let
+    validate_map.sh check that they are in sync when "make mydist"
+    is run.
+    
+    This adds .symver lines for lzma_stream_encoder_mt@XZ_5.2.2 and
+    lzma_stream_encoder_mt_memusage@XZ_5.2.2 even though these
+    weren't exported by RHEL/CentOS 7 (only @@XZ_5.1.2alpha was
+    for these two). I added these anyway because someone might
+    misunderstand the RHEL/CentOS 7 patch and think that @XZ_5.2.2
+    (@@XZ_5.2.2) versions were exported too.
+    
+    At glance one could suggest using __typeof__ to copy the function
+    prototypes when making aliases. However, this doesn't work trivially
+    because __typeof__ won't copy attributes (lzma_nothrow, lzma_pure)
+    and it won't change symbol visibility from hidden to default (done
+    by LZMA_API()). Attributes could be copied with __copy__ attribute
+    but that needs GCC 9 and a fallback method would be needed anyway.
+    
+    This uses __symver__ attribute with GCC >= 10 and
+    __asm__(".symver ...") with everything else. The attribute method
+    is required for LTO (-flto) support with GCC. Using -flto with
+    GCC older than 10 is now broken on GNU/Linux and will not be fixed
+    (can silently result in a broken liblzma build that has dangerously
+    incorrect symbol versions). LTO builds with Clang seem to work
+    with the traditional __asm__(".symver ...") method.
+    
+    Thanks to Boud Roukema for reporting the problem and discussing
+    the details and testing the fix.
+
+ configure.ac                                     |  23 ++++-
+ src/liblzma/Makefile.am                          |  10 +-
+ src/liblzma/common/block_buffer_encoder.c        |  18 ++++
+ src/liblzma/common/common.c                      |  14 +++
+ src/liblzma/common/common.h                      |  28 ++++++
+ src/liblzma/common/hardware_cputhreads.c         |  12 +++
+ src/liblzma/common/stream_encoder_mt.c           |  42 ++++++++
+ src/liblzma/{liblzma.map => liblzma_generic.map} |   6 +-
+ src/liblzma/liblzma_linux.map                    | 123 +++++++++++++++++++++++
+ src/liblzma/validate_map.sh                      | 113 +++++++++++++++++++--
+ 10 files changed, 374 insertions(+), 15 deletions(-)
+
+commit e7a7ac744eb0f890ef52388de838596ef566c73f
+Author: Jia Tan <jiat0218@gmail.com>
+Date:   2022-09-08 15:07:00 +0300
+
+    CMake: Clarify a comment about Windows symlinks without file extension.
+
+ CMakeLists.txt | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+commit a273a0cb77c6000e4da627b07f28c5af41f0908c
+Author: Lasse Collin <lasse.collin@tukaani.org>
+Date:   2022-09-08 15:02:41 +0300
+
+    CMake: Update for liblzma_*.map files and fix wrong common_w32res.rc dep.
+    
+    The previous commit split liblzma.map into liblzma_linux.map and
+    liblzma_generic.map. This commit updates the CMake build for those.
+    
+    common_w32res.rc dependency was listed under Linux/FreeBSD while
+    obviously it belongs to Windows when building a DLL.
+
+ CMakeLists.txt | 24 +++++++++++++++++++-----
+ 1 file changed, 19 insertions(+), 5 deletions(-)
+
+commit 5875a45be0ab399e37acc31165725a9b5291f67e
+Author: Lasse Collin <lasse.collin@tukaani.org>
+Date:   2022-08-31 16:42:04 +0300
+
+    CMake: Add xz symlinks.
+    
+    These are a minor thing especially since the xz build has
+    some real problems still like lack of large file support
+    on 32-bit systems but I'll commit this since the code exists.
+    
+    Thanks to Jia Tan.
+
+ CMakeLists.txt | 38 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 37 insertions(+), 1 deletion(-)
+
+commit 3523b6ebb56c447f21736f01bfe91602741aa3e7
+Author: Lasse Collin <lasse.collin@tukaani.org>
+Date:   2022-08-31 16:29:38 +0300
+
+    CMake: Put xz man page install under if(UNIX) like is for xzdec.
+    
+    Thanks to Jia Tan.
+
+ CMakeLists.txt | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+commit 5af9e8759f748a11a408bfc5aef829df3811fc23
+Author: Lasse Collin <lasse.collin@tukaani.org>
+Date:   2022-09-16 15:10:07 +0300
+
+    Translations: Add Turkish translation.
+
+ po/LINGUAS |   1 +
+ po/tr.po   | 977 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 978 insertions(+)
+
+commit f05a69685e9c7f7157d751abfbd2d8ea6e3bacc7
+Author: Lasse Collin <lasse.collin@tukaani.org>
+Date:   2022-08-18 17:49:16 +0300
+
+    Build: Include the CMake files in the distribution.
+    
+    This was supposed to be done in 2020 with 5.2.5 release
+    already but it was noticed only today. 5.2.5 and 5.2.6
+    even mention experiemental CMake support in the NEWS entries.
+    
+    Thanks to Olivier B. for reporting the problem.
+
+ Makefile.am | 2 ++
+ 1 file changed, 2 insertions(+)
+
+commit ad5ef6d3c30bb749113c51aa0bbe8bcb5e193fbe
+Author: Lasse Collin <lasse.collin@tukaani.org>
+Date:   2022-08-18 17:38:05 +0300
+
+    Windows: Fix broken liblzma.dll build with Visual Studio project files.
+    
+    The bug was introduced in 352ba2d69af2136bc814aa1df1a132559d445616
+    "Windows: Fix building of resource files when config.h isn't used."
+    
+    That commit fixed liblzma.dll build with CMake while keeping it
+    working with Autotools on Windows but the VS project files were
+    forgotten.
+    
+    I haven't tested these changes.
+    
+    Thanks to Olivier B. for reporting the bug and for the initial patch.
+
+ windows/vs2013/liblzma_dll.vcxproj | 6 ++++++
+ windows/vs2017/liblzma_dll.vcxproj | 6 ++++++
+ windows/vs2019/liblzma_dll.vcxproj | 6 ++++++
+ 3 files changed, 18 insertions(+)
+
 commit 8dfed05bdaa4873833ba24279f02ad2db25effea
 Author: Lasse Collin <lasse.collin@tukaani.org>
 Date:   2022-08-12 14:30:13 +0300
