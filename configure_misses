@@ -11,6 +11,9 @@ Configure miss: gcc options needed to detect all undeclared functions
 Configure miss: gcc options needed to detect all undeclared functions
 Configure miss: i686-generic-linux-gnu-file
 Configure miss: i686-generic-linux-gnu-windres
+Configure miss: if assembler optimizations should be used
+Configure miss: if assembler optimizations should be used
+Configure miss: if assembler optimizations should be used
 Configure miss: if debugging code should be compiled
 Configure miss: if debugging code should be compiled
 Configure miss: if debugging code should be compiled
@@ -27,6 +30,10 @@ Configure miss: if unsafe type punning should be used
 Configure miss: if unsafe type punning should be used
 Configure miss: if unsafe type punning should be used
 Configure miss: if unsafe type punning should be used
+Configure miss: pledge
+Configure miss: pledge
+Configure miss: pledge
+Configure miss: pledge
 Configure miss: struct stat.st_atim.st__tim.tv_nsec
 Configure miss: struct stat.st_atim.st__tim.tv_nsec
 Configure miss: struct stat.st_atim.st__tim.tv_nsec
