@@ -6,11 +6,11 @@
 #
 %define keepstatic 1
 Name     : xz
-Version  : 5.4.0
-Release  : 80
-URL      : https://tukaani.org/xz/xz-5.4.0.tar.xz
-Source0  : https://tukaani.org/xz/xz-5.4.0.tar.xz
-Source1  : https://tukaani.org/xz/xz-5.4.0.tar.xz.sig
+Version  : 5.4.1
+Release  : 81
+URL      : https://tukaani.org/xz/xz-5.4.1.tar.xz
+Source0  : https://tukaani.org/xz/xz-5.4.1.tar.xz
+Source1  : https://tukaani.org/xz/xz-5.4.1.tar.xz.sig
 Summary  : General purpose data compression library
 Group    : Development/Tools
 License  : GPL-2.0 GPL-3.0 LGPL-2.1 Public-Domain
@@ -167,20 +167,20 @@ staticdev32 components for the xz package.
 
 
 %prep
-%setup -q -n xz-5.4.0
-cd %{_builddir}/xz-5.4.0
+%setup -q -n xz-5.4.1
+cd %{_builddir}/xz-5.4.1
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
 %patch4 -p2
 pushd ..
-cp -a xz-5.4.0 build32
+cp -a xz-5.4.1 build32
 popd
 pushd ..
-cp -a xz-5.4.0 buildavx2
+cp -a xz-5.4.1 buildavx2
 popd
 pushd ..
-cp -a xz-5.4.0 buildavx512
+cp -a xz-5.4.1 buildavx512
 popd
 
 %build
@@ -188,15 +188,15 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1672256276
+export SOURCE_DATE_EPOCH=1673471248
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -Ofast -falign-functions=32 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -fno-semantic-interposition -g1 -gno-column-info -gno-variable-location-views -gz -mprefer-vector-width=256 "
-export FCFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -fno-semantic-interposition -g1 -gno-column-info -gno-variable-location-views -gz -mprefer-vector-width=256 "
-export FFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -fno-semantic-interposition -g1 -gno-column-info -gno-variable-location-views -gz -mprefer-vector-width=256 "
-export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -fno-semantic-interposition -g1 -gno-column-info -gno-variable-location-views -gz -mprefer-vector-width=256 "
+export CFLAGS="$CFLAGS -O3 -Ofast -falign-functions=32 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -fno-semantic-interposition -g1 -gno-column-info -gno-variable-location-views -gz "
+export FCFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -fno-semantic-interposition -g1 -gno-column-info -gno-variable-location-views -gz "
+export FFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -fno-semantic-interposition -g1 -gno-column-info -gno-variable-location-views -gz "
+export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -fno-semantic-interposition -g1 -gno-column-info -gno-variable-location-views -gz "
 %reconfigure  --enable-assume-ram=1024
 make  %{?_smp_mflags}  pgo-build
 pushd ../build32/
@@ -220,9 +220,9 @@ make  %{?_smp_mflags}  pgo-build
 popd
 unset PKG_CONFIG_PATH
 pushd ../buildavx512/
-export CFLAGS="$CFLAGS -m64 -march=x86-64-v4 -mprefer-vector-width=256 -Wl,-z,x86-64-v4"
-export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v4 -mprefer-vector-width=256 -Wl,-z,x86-64-v4"
-export FFLAGS="$FFLAGS -m64 -march=x86-64-v4 -mprefer-vector-width=256 -Wl,-z,x86-64-v4"
+export CFLAGS="$CFLAGS -m64 -march=x86-64-v4 -mprefer-vector-width=512 -Wl,-z,x86-64-v4 "
+export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v4 -mprefer-vector-width=512 -Wl,-z,x86-64-v4 "
+export FFLAGS="$FFLAGS -m64 -march=x86-64-v4 -mprefer-vector-width=512 -Wl,-z,x86-64-v4"
 export FCFLAGS="$FCFLAGS -m64 -march=x86-64-v4 -mprefer-vector-width=256"
 export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v4"
 %reconfigure  --enable-assume-ram=1024
@@ -243,13 +243,13 @@ cd ../buildavx512;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1672256276
+export SOURCE_DATE_EPOCH=1673471248
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/xz
-cp %{_builddir}/xz-%{version}/COPYING %{buildroot}/usr/share/package-licenses/xz/66933e63e70616b43f1dc60340491f8e050eedfd
-cp %{_builddir}/xz-%{version}/COPYING.GPLv2 %{buildroot}/usr/share/package-licenses/xz/4cc77b90af91e615a64ae04893fdffa7939db84c
-cp %{_builddir}/xz-%{version}/COPYING.GPLv3 %{buildroot}/usr/share/package-licenses/xz/8624bcdae55baeef00cd11d5dfcfa60f68710a02
-cp %{_builddir}/xz-%{version}/COPYING.LGPLv2.1 %{buildroot}/usr/share/package-licenses/xz/01a6b4bf79aca9b556822601186afab86e8c4fbf
+cp %{_builddir}/xz-%{version}/COPYING %{buildroot}/usr/share/package-licenses/xz/66933e63e70616b43f1dc60340491f8e050eedfd || :
+cp %{_builddir}/xz-%{version}/COPYING.GPLv2 %{buildroot}/usr/share/package-licenses/xz/4cc77b90af91e615a64ae04893fdffa7939db84c || :
+cp %{_builddir}/xz-%{version}/COPYING.GPLv3 %{buildroot}/usr/share/package-licenses/xz/8624bcdae55baeef00cd11d5dfcfa60f68710a02 || :
+cp %{_builddir}/xz-%{version}/COPYING.LGPLv2.1 %{buildroot}/usr/share/package-licenses/xz/01a6b4bf79aca9b556822601186afab86e8c4fbf || :
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -345,16 +345,16 @@ popd
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/glibc-hwcaps/x86-64-v3/liblzma.so.5
-/usr/lib64/glibc-hwcaps/x86-64-v3/liblzma.so.5.4.0
+/usr/lib64/glibc-hwcaps/x86-64-v3/liblzma.so.5.4.1
 /usr/lib64/glibc-hwcaps/x86-64-v4/liblzma.so.5
-/usr/lib64/glibc-hwcaps/x86-64-v4/liblzma.so.5.4.0
+/usr/lib64/glibc-hwcaps/x86-64-v4/liblzma.so.5.4.1
 /usr/lib64/liblzma.so.5
-/usr/lib64/liblzma.so.5.4.0
+/usr/lib64/liblzma.so.5.4.1
 
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/liblzma.so.5
-/usr/lib32/liblzma.so.5.4.0
+/usr/lib32/liblzma.so.5.4.1
 
 %files license
 %defattr(0644,root,root,0755)
@@ -403,6 +403,28 @@ popd
 /usr/share/man/fr/man1/xzdiff.1
 /usr/share/man/fr/man1/xzless.1
 /usr/share/man/fr/man1/xzmore.1
+/usr/share/man/ko/man1/lzcat.1
+/usr/share/man/ko/man1/lzcmp.1
+/usr/share/man/ko/man1/lzdiff.1
+/usr/share/man/ko/man1/lzegrep.1
+/usr/share/man/ko/man1/lzfgrep.1
+/usr/share/man/ko/man1/lzgrep.1
+/usr/share/man/ko/man1/lzless.1
+/usr/share/man/ko/man1/lzma.1
+/usr/share/man/ko/man1/lzmadec.1
+/usr/share/man/ko/man1/lzmore.1
+/usr/share/man/ko/man1/unlzma.1
+/usr/share/man/ko/man1/unxz.1
+/usr/share/man/ko/man1/xz.1
+/usr/share/man/ko/man1/xzcat.1
+/usr/share/man/ko/man1/xzcmp.1
+/usr/share/man/ko/man1/xzdec.1
+/usr/share/man/ko/man1/xzdiff.1
+/usr/share/man/ko/man1/xzegrep.1
+/usr/share/man/ko/man1/xzfgrep.1
+/usr/share/man/ko/man1/xzgrep.1
+/usr/share/man/ko/man1/xzless.1
+/usr/share/man/ko/man1/xzmore.1
 /usr/share/man/man1/lzcat.1
 /usr/share/man/man1/lzcmp.1
 /usr/share/man/man1/lzdiff.1
@@ -448,6 +470,28 @@ popd
 /usr/share/man/ro/man1/xzgrep.1
 /usr/share/man/ro/man1/xzless.1
 /usr/share/man/ro/man1/xzmore.1
+/usr/share/man/uk/man1/lzcat.1
+/usr/share/man/uk/man1/lzcmp.1
+/usr/share/man/uk/man1/lzdiff.1
+/usr/share/man/uk/man1/lzegrep.1
+/usr/share/man/uk/man1/lzfgrep.1
+/usr/share/man/uk/man1/lzgrep.1
+/usr/share/man/uk/man1/lzless.1
+/usr/share/man/uk/man1/lzma.1
+/usr/share/man/uk/man1/lzmadec.1
+/usr/share/man/uk/man1/lzmore.1
+/usr/share/man/uk/man1/unlzma.1
+/usr/share/man/uk/man1/unxz.1
+/usr/share/man/uk/man1/xz.1
+/usr/share/man/uk/man1/xzcat.1
+/usr/share/man/uk/man1/xzcmp.1
+/usr/share/man/uk/man1/xzdec.1
+/usr/share/man/uk/man1/xzdiff.1
+/usr/share/man/uk/man1/xzegrep.1
+/usr/share/man/uk/man1/xzfgrep.1
+/usr/share/man/uk/man1/xzgrep.1
+/usr/share/man/uk/man1/xzless.1
+/usr/share/man/uk/man1/xzmore.1
 
 %files staticdev
 %defattr(-,root,root,-)
