@@ -22,6 +22,70 @@ Configure miss: if external SHA-256 should be used
 Configure miss: if external SHA-256 should be used
 Configure miss: if external SHA-256 should be used
 Configure miss: if external SHA-256 should be used
+Configure miss: if gcc accepts -Warray-bounds-pointer-arithmetic
+Configure miss: if gcc accepts -Warray-bounds-pointer-arithmetic
+Configure miss: if gcc accepts -Warray-bounds-pointer-arithmetic
+Configure miss: if gcc accepts -Warray-bounds-pointer-arithmetic
+Configure miss: if gcc accepts -Wassign-enum
+Configure miss: if gcc accepts -Wassign-enum
+Configure miss: if gcc accepts -Wassign-enum
+Configure miss: if gcc accepts -Wassign-enum
+Configure miss: if gcc accepts -Wc11-extensions
+Configure miss: if gcc accepts -Wc11-extensions
+Configure miss: if gcc accepts -Wc11-extensions
+Configure miss: if gcc accepts -Wc11-extensions
+Configure miss: if gcc accepts -Wc2x-compat
+Configure miss: if gcc accepts -Wc2x-compat
+Configure miss: if gcc accepts -Wc2x-compat
+Configure miss: if gcc accepts -Wc2x-compat
+Configure miss: if gcc accepts -Wc2x-extensions
+Configure miss: if gcc accepts -Wc2x-extensions
+Configure miss: if gcc accepts -Wc2x-extensions
+Configure miss: if gcc accepts -Wc2x-extensions
+Configure miss: if gcc accepts -Wc99-compat
+Configure miss: if gcc accepts -Wc99-compat
+Configure miss: if gcc accepts -Wc99-compat
+Configure miss: if gcc accepts -Wc99-compat
+Configure miss: if gcc accepts -Wconditional-uninitialized
+Configure miss: if gcc accepts -Wconditional-uninitialized
+Configure miss: if gcc accepts -Wconditional-uninitialized
+Configure miss: if gcc accepts -Wconditional-uninitialized
+Configure miss: if gcc accepts -Wdocumentation
+Configure miss: if gcc accepts -Wdocumentation
+Configure miss: if gcc accepts -Wdocumentation
+Configure miss: if gcc accepts -Wdocumentation
+Configure miss: if gcc accepts -Wduplicate-enum
+Configure miss: if gcc accepts -Wduplicate-enum
+Configure miss: if gcc accepts -Wduplicate-enum
+Configure miss: if gcc accepts -Wduplicate-enum
+Configure miss: if gcc accepts -Wempty-translation-unit
+Configure miss: if gcc accepts -Wempty-translation-unit
+Configure miss: if gcc accepts -Wempty-translation-unit
+Configure miss: if gcc accepts -Wempty-translation-unit
+Configure miss: if gcc accepts -Wflexible-array-extensions
+Configure miss: if gcc accepts -Wflexible-array-extensions
+Configure miss: if gcc accepts -Wflexible-array-extensions
+Configure miss: if gcc accepts -Wflexible-array-extensions
+Configure miss: if gcc accepts -Wmissing-variable-declarations
+Configure miss: if gcc accepts -Wmissing-variable-declarations
+Configure miss: if gcc accepts -Wmissing-variable-declarations
+Configure miss: if gcc accepts -Wmissing-variable-declarations
+Configure miss: if gcc accepts -Wnewline-eof
+Configure miss: if gcc accepts -Wnewline-eof
+Configure miss: if gcc accepts -Wnewline-eof
+Configure miss: if gcc accepts -Wnewline-eof
+Configure miss: if gcc accepts -Wpre-c2x-compat
+Configure miss: if gcc accepts -Wpre-c2x-compat
+Configure miss: if gcc accepts -Wpre-c2x-compat
+Configure miss: if gcc accepts -Wpre-c2x-compat
+Configure miss: if gcc accepts -Wshift-sign-overflow
+Configure miss: if gcc accepts -Wshift-sign-overflow
+Configure miss: if gcc accepts -Wshift-sign-overflow
+Configure miss: if gcc accepts -Wshift-sign-overflow
+Configure miss: if gcc accepts -Wstring-conversion
+Configure miss: if gcc accepts -Wstring-conversion
+Configure miss: if gcc accepts -Wstring-conversion
+Configure miss: if gcc accepts -Wstring-conversion
 Configure miss: if small size is preferred over speed
 Configure miss: if small size is preferred over speed
 Configure miss: if small size is preferred over speed
