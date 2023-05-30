@@ -8,7 +8,7 @@
 %define keepstatic 1
 Name     : xz
 Version  : 5.4.3
-Release  : 84
+Release  : 85
 URL      : https://tukaani.org/xz/xz-5.4.3.tar.xz
 Source0  : https://tukaani.org/xz/xz-5.4.3.tar.xz
 Source1  : https://tukaani.org/xz/xz-5.4.3.tar.xz.sig
@@ -172,7 +172,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1683239441
+export SOURCE_DATE_EPOCH=1685478326
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -227,7 +227,7 @@ cd ../buildavx512;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1683239441
+export SOURCE_DATE_EPOCH=1685478326
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/xz
 cp %{_builddir}/xz-%{version}/COPYING.GPLv2 %{buildroot}/usr/share/package-licenses/xz/4cc77b90af91e615a64ae04893fdffa7939db84c || :
@@ -264,23 +264,13 @@ popd
 
 %files bin
 %defattr(-,root,root,-)
-/V3/usr/bin/lzcat
-/V3/usr/bin/lzma
 /V3/usr/bin/lzmadec
 /V3/usr/bin/lzmainfo
-/V3/usr/bin/unlzma
-/V3/usr/bin/unxz
 /V3/usr/bin/xz
-/V3/usr/bin/xzcat
 /V3/usr/bin/xzdec
-/V4/usr/bin/lzcat
-/V4/usr/bin/lzma
 /V4/usr/bin/lzmadec
 /V4/usr/bin/lzmainfo
-/V4/usr/bin/unlzma
-/V4/usr/bin/unxz
 /V4/usr/bin/xz
-/V4/usr/bin/xzcat
 /V4/usr/bin/xzdec
 /usr/bin/lzcat
 /usr/bin/lzcmp
@@ -308,8 +298,6 @@ popd
 
 %files dev
 %defattr(-,root,root,-)
-/V3/usr/lib64/liblzma.so
-/V4/usr/lib64/liblzma.so
 /usr/include/lzma.h
 /usr/include/lzma/base.h
 /usr/include/lzma/bcj.h
@@ -340,9 +328,7 @@ popd
 
 %files lib
 %defattr(-,root,root,-)
-/V3/usr/lib64/liblzma.so.5
 /V3/usr/lib64/liblzma.so.5.4.3
-/V4/usr/lib64/liblzma.so.5
 /V4/usr/lib64/liblzma.so.5.4.3
 /usr/lib64/liblzma.so.5
 /usr/lib64/liblzma.so.5.4.3
