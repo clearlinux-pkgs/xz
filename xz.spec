@@ -7,11 +7,11 @@
 #
 %define keepstatic 1
 Name     : xz
-Version  : 5.4.3
-Release  : 85
-URL      : https://tukaani.org/xz/xz-5.4.3.tar.xz
-Source0  : https://tukaani.org/xz/xz-5.4.3.tar.xz
-Source1  : https://tukaani.org/xz/xz-5.4.3.tar.xz.sig
+Version  : 5.4.4
+Release  : 86
+URL      : https://tukaani.org/xz/xz-5.4.4.tar.xz
+Source0  : https://tukaani.org/xz/xz-5.4.4.tar.xz
+Source1  : https://tukaani.org/xz/xz-5.4.4.tar.xz.sig
 Summary  : General purpose data compression library
 Group    : Development/Tools
 License  : GPL-2.0 GPL-3.0 LGPL-2.1 Public-Domain
@@ -151,20 +151,20 @@ staticdev32 components for the xz package.
 
 
 %prep
-%setup -q -n xz-5.4.3
-cd %{_builddir}/xz-5.4.3
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p2
+%setup -q -n xz-5.4.4
+cd %{_builddir}/xz-5.4.4
+%patch -P 1 -p1
+%patch -P 2 -p1
+%patch -P 3 -p1
+%patch -P 4 -p2
 pushd ..
-cp -a xz-5.4.3 build32
+cp -a xz-5.4.4 build32
 popd
 pushd ..
-cp -a xz-5.4.3 buildavx2
+cp -a xz-5.4.4 buildavx2
 popd
 pushd ..
-cp -a xz-5.4.3 buildavx512
+cp -a xz-5.4.4 buildavx512
 popd
 
 %build
@@ -172,7 +172,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1685478326
+export SOURCE_DATE_EPOCH=1691001168
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -227,7 +227,7 @@ cd ../buildavx512;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1685478326
+export SOURCE_DATE_EPOCH=1691001168
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/xz
 cp %{_builddir}/xz-%{version}/COPYING.GPLv2 %{buildroot}/usr/share/package-licenses/xz/4cc77b90af91e615a64ae04893fdffa7939db84c || :
@@ -328,15 +328,15 @@ popd
 
 %files lib
 %defattr(-,root,root,-)
-/V3/usr/lib64/liblzma.so.5.4.3
-/V4/usr/lib64/liblzma.so.5.4.3
+/V3/usr/lib64/liblzma.so.5.4.4
+/V4/usr/lib64/liblzma.so.5.4.4
 /usr/lib64/liblzma.so.5
-/usr/lib64/liblzma.so.5.4.3
+/usr/lib64/liblzma.so.5.4.4
 
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/liblzma.so.5
-/usr/lib32/liblzma.so.5.4.3
+/usr/lib32/liblzma.so.5.4.4
 
 %files license
 %defattr(0644,root,root,0755)
