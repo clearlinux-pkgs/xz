@@ -10,7 +10,7 @@
 %define keepstatic 1
 Name     : xz
 Version  : 5.4.6
-Release  : 88
+Release  : 89
 URL      : https://github.com/tukaani-project/xz/releases/download/v5.4.6/xz-5.4.6.tar.xz
 Source0  : https://github.com/tukaani-project/xz/releases/download/v5.4.6/xz-5.4.6.tar.xz
 Source1  : https://github.com/tukaani-project/xz/releases/download/v5.4.6/xz-5.4.6.tar.xz.sig
