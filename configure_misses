@@ -5,6 +5,10 @@ Configure miss: CFLocaleCopyPreferredLanguages
 Configure miss: CFLocaleCopyPreferredLanguages
 Configure miss: CFLocaleCopyPreferredLanguages
 Configure miss: CFLocaleCopyPreferredLanguages
+Configure miss: cap_rights_limit
+Configure miss: cap_rights_limit
+Configure miss: cap_rights_limit
+Configure miss: cap_rights_limit
 Configure miss: gcc option to enable large file support
 Configure miss: gcc option to enable large file support
 Configure miss: gcc option to enable large file support
@@ -14,6 +18,10 @@ Configure miss: gcc options needed to detect all undeclared functions
 Configure miss: gcc options needed to detect all undeclared functions
 Configure miss: i686-generic-linux-gnu-file
 Configure miss: i686-generic-linux-gnu-windres
+Configure miss: if ARM64 CRC32 instruction is usable
+Configure miss: if ARM64 CRC32 instruction is usable
+Configure miss: if ARM64 CRC32 instruction is usable
+Configure miss: if ARM64 CRC32 instruction is usable
 Configure miss: if assembler optimizations should be used
 Configure miss: if assembler optimizations should be used
 Configure miss: if assembler optimizations should be used
@@ -117,14 +125,6 @@ Configure miss: struct stat.st_uatime
 Configure miss: struct stat.st_uatime
 Configure miss: struct stat.st_uatime
 Configure miss: struct stat.st_uatime
-Configure miss: sys/capsicum.h
-Configure miss: sys/capsicum.h
-Configure miss: sys/capsicum.h
-Configure miss: sys/capsicum.h
-Configure miss: whether cap_rights_limit is declared
-Configure miss: whether cap_rights_limit is declared
-Configure miss: whether cap_rights_limit is declared
-Configure miss: whether cap_rights_limit is declared
 Configure miss: whether optreset is declared
 Configure miss: whether optreset is declared
 Configure miss: whether optreset is declared
